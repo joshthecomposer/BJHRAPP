@@ -17,9 +17,23 @@ public class MainController : Controller
     [HttpGet("/")]
     public IActionResult Index()
     {
-        List<User> users = _context.Users.ToList();
-        ViewBag.Users = users;
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+        {
+            return Redirect("/register");
+        }
         return View("Index");
+    }
+
+    [HttpGet("/register")]
+    public ViewResult Register()
+    {
+        return View("Register");
+    }
+
+    [HttpGet("/login")]
+    public IActionResult Login()
+    {
+        return View("Login");
     }
 
     public RedirectResult Create(User u)
