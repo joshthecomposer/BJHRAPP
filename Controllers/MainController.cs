@@ -17,7 +17,8 @@ public class MainController : Controller
     [HttpGet("/")]
     public IActionResult Index()
     {
-        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+        HttpContext.Session.SetInt32("UserId", 1);  //TODO: Get rid of this later
+        if (HttpContext.Session.GetInt32("UserId") == null)
         {
             return Redirect("/register");
         }
