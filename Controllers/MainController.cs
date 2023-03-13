@@ -37,6 +37,12 @@ public class MainController : Controller
         return View("Login");
     }
 
+    [HttpGet("/test")]
+    public IActionResult PlayGround()
+    {
+        return View("Test");
+    }
+
     public RedirectResult Create(User u)
     {
         if (ModelState.IsValid)

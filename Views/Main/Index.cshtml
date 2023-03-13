@@ -1,9 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-@await Html.PartialAsync("_NavBar")
-    <div class="h-screen bg-gradient-to-r from-[#1C2637] to-slate-900">
-        
-    </div>
-    @* <div class="h-screen bg-gradient-to-r from-[#3730A0] to-indigo-900 login">
-    </div> *@
+﻿@await Html.PartialAsync("_NavBar")
+<div class="mx-50 pt-5 h-screen bg-gradient-to-r from-[#1C2637] to-slate-900 flex flex-col gap-3">
+    @await Html.PartialAsync("_Header")
+    @await Html.PartialAsync("_PunchBox")
+</div>
+@* <div class="h-screen bg-gradient-to-r from-[#3730A0] to-indigo-900 login">
+</div> *@
