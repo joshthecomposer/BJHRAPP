@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BJHRApp</title>
     @* <link rel="stylesheet" href="~/BJHRApp.styles.css" asp-append-version="true" /> *@
-     <script src="https://cdn.tailwindcss.com"></script>
+     @* <script src="https://cdn.tailwindcss.com"></script> *@
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <main role="main">
-        @RenderBody()
-    </main>
+    @RenderBody()
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
