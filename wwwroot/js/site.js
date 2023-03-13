@@ -1,4 +1,16 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿let navItems = document.querySelectorAll(".nav-item")
+let show = false;
 
-// Write your JavaScript code.
+function toggleNav()
+{
+    if (!show)
+    {
+        navItems.forEach(i => i.style.display = "inline");
+        show = true;
+    }
+    else
+    {
+        navItems.forEach(i => i.style.display = "none");
+        show = false;
+    }
+}
