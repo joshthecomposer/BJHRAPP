@@ -1,16 +1,10 @@
-﻿let navItems = document.querySelectorAll(".nav-item")
-let show = false;
+﻿let navItems = document.querySelectorAll(".nav-item");
+let navBar = document.querySelector("nav");
 
-function toggleNav()
-{
-    if (!show)
-    {
-        navItems.forEach(i => i.style.display = "inline");
-        show = true;
-    }
-    else
-    {
-        navItems.forEach(i => i.style.display = "none");
-        show = false;
-    }
+
+navBar.onmouseover = function () {
+    setTimeout(()=>{navItems.forEach(i => i.style.opacity = "1.0")},400)
+}
+navBar.onmouseout = function () {
+    setTimeout(()=>{navItems.forEach(i => i.style.opacity = "0")},100)
 }
