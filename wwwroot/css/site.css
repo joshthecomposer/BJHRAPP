@@ -1,4 +1,8 @@
-main {
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.login {
     background-image: url("../img/bg.svg");
     background-repeat: no-repeat;
     background-size: cover;
