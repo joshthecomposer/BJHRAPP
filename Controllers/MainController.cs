@@ -17,24 +17,12 @@ public class MainController : Controller
     [HttpGet("/")]
     public IActionResult Index()
     {
-        HttpContext.Session.SetInt32("UserId", 1);  //TODO: Get rid of this later, it is for access to index without sign-in
+        // HttpContext.Session.SetInt32("UserId", 1);  //TODO: Get rid of this later, it is for access to index without sign-in
         if (HttpContext.Session.GetInt32("UserId") == null)
         {
             return Redirect("/register");
         }
         return View("Index");
-    }
-
-    [HttpGet("/register")]
-    public ViewResult Register()
-    {
-        return View("Register");
-    }
-
-    [HttpGet("/login")]
-    public IActionResult Login()
-    {
-        return View("Login");
     }
 
     [HttpGet("/test")]
