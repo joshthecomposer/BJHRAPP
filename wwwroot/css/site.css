@@ -1,12 +1,11 @@
 /* * {
-    margin: 0;
-    border: 0;
-    padding:  0;
-    box-sizing: border-box;
-    vertical-align: top;
-    color: white;
     outline: red 1px dashed;
+
 } */
+
+html {
+    background: #0f172a;
+}
 
 .login {
     background-image: url("../img/bg.svg");
