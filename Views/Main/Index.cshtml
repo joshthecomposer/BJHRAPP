@@ -1,4 +1,97 @@
-﻿<div class="mx-50 pt-5 h-screen bg-gradient-to-r from-[#1C2637] to-slate-900 flex flex-col gap-3">
+﻿
+<div class="h-screen bg-gradient-to-r from-[#1C2637] to-slate-900 flex">
+    <div class="w-1/6">
+    </div>
+    @await Html.PartialAsync("_NavBar")
+    <div class="w-3/6 bg-transparent grid grid-cols-4">
+        <h1 class="text-slate-50 text-2xl self-end col-span-4 -translate-y-6"><span class="font-light tracking-wide">Welcome Back,</span> Joshua</h1>
+            <div class="flex flex-col self-start justify-self-start"> 
+                <div class="w-28 bg-orange-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-orange-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col self-start justify-self-start">  
+                <div class="w-28 bg-blue-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-blue-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col self-start justify-self-start"> 
+                <div class="w-28 bg-purple-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-purple-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col self-start justify-self-start"> 
+                <div class="w-28 bg-red-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-red-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>            
+            <div class="flex flex-col self-start justify-self-start">  
+                <div class="w-28 bg-gray-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-gray-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col self-start justify-self-start">  
+                <div class="w-28 bg-pink-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-pink-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col self-start justify-self-start">  
+                <div class="w-28 bg-yellow-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                        <div class="h-56 bg-yellow-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col self-start justify-self-start">  
+                <div class="w-28 bg-green-500 h-28 rounded shadow-lg overflow-hidden">
+                    <div class="w-28  overflow-hidden inline-block">
+                    <img class="absolute top-50 left-50" src="~/img/iconmonstr-home-1.svg" alt="">
+                        <div class="h-56 bg-green-600 rotate-45 transform origin-top-right"></div>
+                    </div>
+                </div>
+            </div>
+        @* </div> *@
+    </div>
+    <!-- RIGHT SIDE OF PAGE -->
+    <div class="w-2/6 bg-slate-800 max-h-screen rounded shadow-lg py-3 px-2 flex flex-col gap-3">
+    <h1 class="text-slate-50 uppercase mb-3 tracking-wide font-light text-xl">Latest <span class="font-bold">Activity</span></h1>
+        <div class="w-full flex flex-col gap-3 bg-slate-700 rounded py-2 px-4">
+            <div class="flex gap-3 items-center">
+                <img src="~/img/megaphone.svg" width="15">
+                <h2 class="text-green-300 tracking-wider text-lg font-bold">BROOKLYN SUPPLIERS</h2>
+                <p class="text-slate-300 text-xs tracking-wider font-light ml-auto">March 3rd, 2023</p>
+            </div>
+            <p class="text-slate-300 text-sm"><span class=" text-sm font-bold uppercase">Schedule Due:</span> The recieving team needs their schedule for the payperiod starting on 03/19/2023 and ending on 4/01/2023</p>
+        </div>
+        <div class="w-full flex flex-col gap-3 bg-slate-700 rounded py-2 px-4">
+            <div class="flex gap-3 items-center">
+                <img src="~/img/megaphone.svg" width="15">
+                <h2 class="text-green-300 tracking-wider text-lg font-bold">BROOKLYN SUPPLIERS</h2>
+                <p class="text-slate-300 text-xs tracking-wider font-light ml-auto">March 3rd, 2023</p>
+            </div>
+            <p class="text-slate-300 text-sm"><span class=" text-sm font-bold uppercase">Schedule Due:</span> The recieving team needs their schedule for the payperiod starting on 03/19/2023 and ending on 4/01/2023</p>
+        </div>
+        <div class="w-full flex flex-col gap-3 bg-slate-700 rounded py-2 px-4">
+            <div class="flex gap-3 items-center">
+                <img src="~/img/megaphone.svg" width="15">
+                <h2 class="text-green-300 tracking-wider text-lg font-bold">BROOKLYN SUPPLIERS</h2>
+                <p class="text-slate-300 text-xs tracking-wider font-light ml-auto">March 3rd, 2023</p>
+            </div>
+            <p class="text-slate-300 text-sm"><span class=" text-sm font-bold uppercase">Schedule Due:</span> The recieving team needs their schedule for the payperiod starting on 03/19/2023 and ending on 4/01/2023</p>
+        </div>
+    </div>
 </div>
 @* <div class="h-screen bg-gradient-to-r from-[#3730A0] to-indigo-900 login">
 </div> *@
