@@ -2,9 +2,19 @@
 let navBar = document.querySelector("nav");
 
 
-navBar.onmouseover = function () {
-    setTimeout(()=>{navItems.forEach(i => i.style.opacity = "1.0")},400)
+navBar.onmouseenter = function () {
+    setTimeout(() => {
+        navItems.forEach(i => {
+            i.style.opacity = "1.0"
+            i.style.display = "inline"
+        })
+    }, 400)
 }
-navBar.onmouseout = function () {
-    setTimeout(()=>{navItems.forEach(i => i.style.opacity = "0")},100)
+navBar.onmouseleave = function () {
+    setTimeout(() => {
+        navItems.forEach(i => {
+            i.style.opacity = "0"
+            i.style.display = "none"
+        })
+    }, 100)
 }
