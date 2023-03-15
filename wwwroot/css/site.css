@@ -12,3 +12,10 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.dash-icon {
+    position: absolute;
+    top: calc(50% - 2rem);
+    left: calc(50% - 2rem);
+    height: 4rem;
+}
