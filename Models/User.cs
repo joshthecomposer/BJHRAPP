@@ -16,7 +16,7 @@ public class User
     [Required]
     [EmailAddress]
     public string Email { get; set; }
-    [Required]
+    [Required] //TODO: Is this truly required on creation or can be defaulted to 0 and assigned later?
     public int AdminLevel { get; set;}
     [Required]
     [MaxLength(8)]
@@ -27,4 +27,7 @@ public class User
 
     public DateTime CreatedAt = DateTime.Now;
     public DateTime UpdatedAt = DateTime.Now;
+
+    //One user to many punches
+    public List<Punch> Punches = new List<Punch>();
 }

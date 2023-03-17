@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BJHRApp.Models;
 
 namespace BJHRApp.Controllers;
-
+[Route("users")]
 public class UserController : Controller
 {
     private readonly ILogger<UserController> _logger;
@@ -14,16 +14,29 @@ public class UserController : Controller
         _context = context;
     }
 
-    [HttpGet("/register")]
+    [HttpGet("register")]
     public ViewResult Register()
     {
-        return View("Register");
+        return View();
     }
 
-    [HttpGet("/login")]
-    public IActionResult Login()
+    [HttpGet("login")]
+    public ViewResult Login()
     {
-        return View("Login");
+        return View();
+    }
+
+    [HttpGet("logout")]
+    public RedirectToActionResult Logout()
+    {
+        // HttpContext.Session.Clear();
+        return RedirectToAction("Login");
+    }
+
+    [HttpGet("settings/{UserId}")]
+    public ViewResult Settings()
+    {
+        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

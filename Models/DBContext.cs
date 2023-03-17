@@ -5,4 +5,5 @@ public class DBContext : DbContext
 {   
     public DBContext(DbContextOptions options) : base(options) { }      
     public DbSet<User> Users { get; set; }
+    public DbSet<Punch> Punches { get; set; }
 }

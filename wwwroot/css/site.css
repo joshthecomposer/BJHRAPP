@@ -3,8 +3,13 @@
 
 } */
 
+:root {
+	--scr-primary: dimgray;
+	--scr-secondary: gray;
+}
+/* from-[#1C2637] to-slate-900 */
 html {
-    background: #0f172a;
+  background: #0f172a;
 }
 
 .login {
@@ -19,3 +24,33 @@ html {
     left: calc(50% - 2rem);
     height: 4rem;
 }
+
+/* Scrollbar styles */
+
+/* Firefox */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--scr-primary) var(--scr-secondary);
+  }
+  
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+	width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+	background: var(--scr-primary);
+  }
+  
+  *::-webkit-scrollbar-thumb {
+	background-color: var(--scr-secondary);
+  /*   background: repeating-linear-gradient(
+	  45deg,
+	  var(--scr-secondary),
+	  var(--scr-secondary) 5px,
+	  var(--scr-primary) 5px,
+	  var(--scr-primary) 10px
+	); */
+	border-radius: 20px;
+	border: 3px solid var(--scr-primary);
+  }
