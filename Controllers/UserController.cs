@@ -14,10 +14,26 @@ public class UserController : Controller
         _context = context;
     }
 
+//TODO: message-Brian Not sure how to render the _RegisterForm.cshtml file from this route, keeps 404ing. Will investigate tomorrow.
     [HttpGet("register")]
     public ViewResult Register()
     {
-        return View();
+        return View("_RegisterForm");
+    }
+
+    [HttpPost("user/create")]
+    public IActionResult Create(User newUser)
+    {
+        if(ModelState.IsValid)
+        {
+            // Add the user to the DB
+            // Also add the user ID to session
+            return RedirectToAction("/");
+        }
+        else
+        {
+            return View("Register");
+        }
     }
 
     [HttpGet("login")]
