@@ -8,7 +8,7 @@ public class User : BaseEntity
     [Required(ErrorMessage="Field required")]
     [MinLength(2, ErrorMessage ="At least 2 characters")]
     public string FirstName { get; set; }
-    [Required]
+    [Required(ErrorMessage="Field required")]
     [MinLength(2, ErrorMessage ="At least 2 characters")]
     public string LastName { get; set; }
     [UniqueEmail]

@@ -8,7 +8,7 @@ public class UniqueEmailAttribute : ValidationAttribute
     {
         if(value == null)
         {
-            return new ValidationResult("Email is required");
+            return new ValidationResult("Field required");
         }
         //Inject the DB
         DBContext _context = (DBContext)validationContext.GetService(typeof(DBContext))!;
