@@ -21,7 +21,7 @@ namespace BJHRApp.Migrations
 
             modelBuilder.Entity("BJHRApp.Models.Punch", b =>
                 {
-                    b.Property<int>("PunchId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -37,7 +37,7 @@ namespace BJHRApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("PunchId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -46,7 +46,7 @@ namespace BJHRApp.Migrations
 
             modelBuilder.Entity("BJHRApp.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -56,6 +56,9 @@ namespace BJHRApp.Migrations
                     b.Property<string>("Confirm")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -74,7 +77,10 @@ namespace BJHRApp.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("varchar(8)");
 
-                    b.HasKey("UserId");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
