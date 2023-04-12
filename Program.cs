@@ -1,6 +1,6 @@
 // Add this using statement
 using Microsoft.EntityFrameworkCore;
-using BJHRApp.Models;
+using BJHRApp.Data;
 // You will need access to your models for your context file
 // Builder code from before
 var builder = WebApplication.CreateBuilder(args);

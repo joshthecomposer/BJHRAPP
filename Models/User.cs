@@ -15,8 +15,11 @@ public class User
     public string LastName { get; set; }
     [Required]
     [EmailAddress]
+    [UniqueEmail]
     public string Email { get; set; }
-    [Required] //TODO: Is this truly required on creation or can be defaulted to 0 and assigned later?
+    [Required] 
+    //TODO: Is this truly required on creation or can be defaulted to 0 and assigned later?
+    //TODO: message-Brian I agree, this probably isn't actually required. Could likely set this to a default user value upon creation.
     public int AdminLevel { get; set;}
     [Required]
     [MaxLength(8)]
