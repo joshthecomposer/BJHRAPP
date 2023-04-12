@@ -18,6 +18,7 @@ public class User : BaseEntity
     [Required(ErrorMessage = "Field required")]
     [MaxLength(8, ErrorMessage="At least 8 characters")]
     public string Password { get; set; }
+    [NotMapped]
     [Required(ErrorMessage ="Field required")]
     [Compare("Password", ErrorMessage = "Passwords must match")]
     public string Confirm { get; set; }
