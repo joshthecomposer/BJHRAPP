@@ -5,23 +5,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BJHRApp.Models;
 public class User : BaseEntity
 {
-    [Required]
-    [MinLength(4)]
+    [Required(ErrorMessage="Field required")]
+    [MinLength(2, ErrorMessage ="At least 2 characters")]
     public string FirstName { get; set; }
     [Required]
-    [MinLength(4)]
+    [MinLength(2, ErrorMessage ="At least 2 characters")]
     public string LastName { get; set; }
-    [Required]
-    [EmailAddress]
     [UniqueEmail]
+    [EmailAddress(ErrorMessage ="Invalid email")]
     public string Email { get; set; }
-    [Required] 
-    public int AdminLevel { get; set;}
-    [Required]
-    [MaxLength(8)]
+    public int AdminLevel { get; set; } = 0;
+    [Required(ErrorMessage = "Field required")]
+    [MaxLength(8, ErrorMessage="At least 8 characters")]
     public string Password { get; set; }
-    [Required]
-    [Compare("Password")]
+    [Required(ErrorMessage ="Field required")]
+    [Compare("Password", ErrorMessage = "Passwords must match")]
     public string Confirm { get; set; }
 
     //One user to many punches

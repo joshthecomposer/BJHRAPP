@@ -8,14 +8,14 @@ public class UniqueEmailAttribute : ValidationAttribute
     {
         if(value == null)
         {
-            return new ValidationResult("Email is required!");
+            return new ValidationResult("Email is required");
         }
         //Inject the DB
         DBContext _context = (DBContext)validationContext.GetService(typeof(DBContext))!;
         //Query the DB to see if the email exists
         if(_context.Users.Any(e => e.Email == value.ToString()))
         {
-            return new ValidationResult("Email must be unique!");
+            return new ValidationResult("Email must be unique");
         }
         else
         {

@@ -5,10 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BJHRApp.Models;
 class LoginUser
 {
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage="Field required")]
+    [EmailAddress(ErrorMessage ="Invalid email")]
     public string Email { get; set; }
-    [Required]
-    [MinLength(8)]
+    [Required(ErrorMessage="Field required")]
     public string Password { get; set; }
 }
