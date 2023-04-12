@@ -18,7 +18,7 @@ public class UserController : Controller
     [HttpGet("register")]
     public ViewResult Register()
     {
-        return View("_RegisterForm");
+        return View();
     }
 
     [HttpPost("user/create")]
