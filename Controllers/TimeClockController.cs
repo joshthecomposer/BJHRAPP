@@ -24,11 +24,9 @@ public class TimeClockController : Controller
     [HttpPost("{UserId}/punch")]
     public RedirectResult CreatePunch(int id)
     {
-        //TODO:Add logic for creating and insertig a punch for current user into DB
         return Redirect("/users/timeclock/"+ HttpContext.Session.GetInt32("UserId"));
     }
 
-    //TODO:Add a route/View for Admins to add/update user punches manually.
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

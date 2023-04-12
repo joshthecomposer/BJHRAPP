@@ -18,7 +18,6 @@ public class MainController : Controller
     [HttpGet("/")]
     public IActionResult Index()
     {
-        HttpContext.Session.SetInt32("UserId", 1);  //TODO: Get rid of this later, it is for access to index for dev purposes.
         if (HttpContext.Session.GetInt32("UserId") is null)
         {
             return Redirect("/users/login");
