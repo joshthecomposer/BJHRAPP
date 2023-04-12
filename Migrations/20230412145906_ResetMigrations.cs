@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BJHRApp.Migrations
 {
-    public partial class ExtendEntitiesFromBaseEntity : Migration
+    public partial class ResetMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
