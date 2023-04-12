@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230412145906_ResetMigrations")]
-    partial class ResetMigrations
+    [Migration("20230412150817_NewInitMigration")]
+    partial class NewInitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,10 +54,6 @@ namespace BJHRApp.Migrations
 
                     b.Property<int>("AdminLevel")
                         .HasColumnType("int");
-
-                    b.Property<string>("Confirm")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");

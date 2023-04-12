@@ -53,10 +53,6 @@ namespace BJHRApp.Migrations
                     b.Property<int>("AdminLevel")
                         .HasColumnType("int");
 
-                    b.Property<string>("Confirm")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
