@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BJHRApp.Models;
+using BJHRApp.Data;
 
 namespace BJHRApp.Controllers;
 

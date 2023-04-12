@@ -1,5 +1,6 @@
 //TODO: message-Brian Not sure where to put custom validations/annotations, but figured this could live here for now
 using System.ComponentModel.DataAnnotations;
+using BJHRApp.Data;
 namespace BJHRApp.Models;
 
 public class UniqueEmailAttribute : ValidationAttribute
