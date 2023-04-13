@@ -16,7 +16,7 @@ public class User : BaseEntity
     public string Email { get; set; }
     public int AdminLevel { get; set; } = 0;
     [Required(ErrorMessage = "Field required")]
-    [MaxLength(8, ErrorMessage="At least 8 characters")]
+    [MinLength(8, ErrorMessage="At least 8 characters")]
     public string Password { get; set; }
     [NotMapped]
     [Required(ErrorMessage ="Field required")]

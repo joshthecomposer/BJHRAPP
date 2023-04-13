@@ -8,6 +8,6 @@ public class Punch : BaseEntity
     [Required]
     public DateTime Time { get; set; } = DateTime.Now;
 
-    //DB Relationship
+    //DB Associations
     public User User { get; set; }
 }

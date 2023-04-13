@@ -12,4 +12,6 @@ public class Schedule : BaseEntity
     [Required]
     public DateTime TimeOut { get; set; }
 
+    //DB Associations
+    public User User { get; set; }
 }
