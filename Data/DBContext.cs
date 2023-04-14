@@ -1,6 +1,7 @@
 #pragma warning disable CS8618
 using Microsoft.EntityFrameworkCore;
-namespace BJHRApp.Models;
+using BJHRApp.Models;
+namespace BJHRApp.Data;
 public class DBContext : DbContext 
 {   
     public DBContext(DbContextOptions options) : base(options) { }      

@@ -3,46 +3,41 @@
     <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-first-name" asp-for="FirstName">
-            First Name
+            First Name <span class="text-red-500" asp-validation-for="FirstName"></span>
         </label>
         <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" asp-for="FirstName">
-        <span asp-validation-for="FirstName"></span>
+        
         </div>
         <div class="w-full md:w-1/2 px-3">
         <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-last-name" asp-for="LastName">
-            Last Name
+            Last Name <span class="text-red-500" asp-validation-for="LastName"></span>
         </label>
         <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe" asp-for="LastName">
-        <span asp-validation-for="LastName"></span>
         </div>
     </div>
 
     <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full px-3">
         <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-password" asp-for="Email">
-            Email
+            Email <span class="text-red-500" asp-validation-for="Email"></span>
         </label>
         <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="text" placeholder="example@email.com" asp-for="Email">
-        @* <p class="text-indigo-100 text-xs italic">One uppercase, one lowercase, one number, and a special character minimum</p> *@
-        <span asp-validation-for="Email"></span>
         </div>
     </div>
     <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-first-name" asp-for="Password">
-            Password
+            Password <span class="text-red-500" asp-validation-for="Password"></span>
         </label>
         <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="password" placeholder="********" asp-for="Password">
-        <span asp-validation-for="Password"></span>
         </div>
         <div class="w-full md:w-1/2 px-3">
         <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-last-name" asp-for="Confirm">
-            Confirm
+            Confirm <span class="text-red-500" asp-validation-for="Confirm"></span>
         </label>
         <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="password" placeholder="********" asp-for="Confirm">
-        <span asp-validation-for="Confirm"></span>
         </div>
     </div>
         <button class="bg-indigo-700 hover:bg-indigo-500 text-indigo-100 font-bold py-2 px-4 rounded w-full shadow-lg">Submit</button>
-        <p class="text-sm text-indigo-100 italic mt-4">Already registered? <a class="text-indigo-300 hover:text-indigo-100 underline" href="/login">Login Here</a></p>
+        <p class="text-sm text-indigo-100 italic mt-4">Already registered? <a class="text-indigo-300 hover:text-indigo-100 underline" href="/users/login">Login Here</a></p>
     </form>
