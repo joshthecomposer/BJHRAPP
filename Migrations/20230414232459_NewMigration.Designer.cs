@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230412150817_NewInitMigration")]
-    partial class NewInitMigration
+    [Migration("20230414232459_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,8 +72,7 @@ namespace BJHRApp.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");

@@ -22,7 +22,7 @@ public class MainController : Controller
     public IActionResult Index()
     {   
         int? userId = HttpContext.Session.GetInt32("UserId");
-        User? currentLoggedUser = _context.Users.FirstOrDefault(u => u.UserId == userId);
+        User? currentLoggedUser = _context.Users.FirstOrDefault(u => u.Id == userId);
         ViewBag.FirstName = currentLoggedUser.FirstName;
         ViewBag.LastName = currentLoggedUser.LastName;
         return View();
