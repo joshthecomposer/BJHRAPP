@@ -34,16 +34,6 @@ public class MainController : Controller
         return View("Test");
     }
 
-    public RedirectResult Create(User u)
-    {
-        if (ModelState.IsValid)
-        {
-            _context.Add(u);
-            _context.SaveChanges();
-        }
-        return Redirect("/");
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
