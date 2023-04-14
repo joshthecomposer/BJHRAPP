@@ -14,13 +14,16 @@ public class User : BaseEntity
     [UniqueEmail]
     [EmailAddress(ErrorMessage ="Invalid email")]
     public string Email { get; set; }
-    public int AdminLevel { get; set; } = 0;
-    [Required(ErrorMessage = "Field required")]
-    [MinLength(8, ErrorMessage="At least 8 characters")]
+    [Required]
+    //TODO: Is this truly required on creation or can be defaulted to 0 and assigned later?
+    //TODO: message-Brian I agree, this probably isn't actually required. Could likely set this to a default user value upon creation.
+    public int AdminLevel { get; set;}
+    [Required]
+    [MinLength(8)]
     public string Password { get; set; }
+    [Required]
     [NotMapped]
-    [Required(ErrorMessage ="Field required")]
-    [Compare("Password", ErrorMessage = "Passwords must match")]
+    [Compare("Password")]
     public string Confirm { get; set; }
 
     //One user to many punches
