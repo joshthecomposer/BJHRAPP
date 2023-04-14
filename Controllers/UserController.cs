@@ -1,5 +1,8 @@
+#pragma warning disable CS8602
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 
 namespace BJHRApp.Controllers;
@@ -14,21 +17,27 @@ public class UserController : Controller
         _context = context;
     }
 
-//TODO: message-Brian Not sure how to render the _RegisterForm.cshtml file from this route, keeps 404ing. Will investigate tomorrow.
     [HttpGet("register")]
     public ViewResult Register()
     {
-        return View("_RegisterForm");
+        return View();
     }
 
-    [HttpPost("user/create")]
+    [HttpPost("create")]
     public IActionResult Create(User newUser)
     {
         if(ModelState.IsValid)
         {
+            // Instantiate the password hashyboi
+            PasswordHasher<User> Hasher = new PasswordHasher<User>();
+            // Update the user password to be hashed AF
+            newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
             // Add the user to the DB
+            _context.Add(newUser);
             // Also add the user ID to session
-            return RedirectToAction("/");
+            _context.SaveChanges();
+            HttpContext.Session.SetInt32("UserId", newUser.UserId);
+            return Redirect("/");
         }
         else
         {
@@ -37,18 +46,43 @@ public class UserController : Controller
     }
 
     [HttpGet("login")]
-    public ViewResult Login()
+    public ViewResult Login(LoginUser loginUser)
     {
         return View();
     }
 
+    [HttpPost("login")]
+    public IActionResult LoginAttempt(LoginUser loginUser)
+    {
+        User? userInDb = _context.Users.FirstOrDefault(u => u.Email == loginUser.Email);
+        if(ModelState.IsValid)
+        {
+            if(userInDb == null)
+            {
+                ModelState.AddModelError("Email", "Invalid Email/Password");
+                return View("Login");
+            }
+        }
+        PasswordHasher<LoginUser> Hasher = new PasswordHasher<LoginUser>();
+        var Result = Hasher.VerifyHashedPassword(loginUser, userInDb.Password, loginUser.Password);
+        if(Result == 0)
+        {
+            ModelState.AddModelError("Password", "Invalid Email/Password");
+            return View("Login");
+        }
+        HttpContext.Session.SetInt32("UserId", userInDb.UserId);
+        return Redirect("/");
+    }
+
+    [SessionCheck]
     [HttpGet("logout")]
     public RedirectToActionResult Logout()
     {
-        // HttpContext.Session.Clear();
+        HttpContext.Session.Clear();
         return RedirectToAction("Login");
     }
 
+    [SessionCheck]
     [HttpGet("settings/{UserId}")]
     public ViewResult Settings()
     {
@@ -59,5 +93,20 @@ public class UserController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public class SessionCheckAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Find the session, but ensure to check for null
+            int? userId = context.HttpContext.Session.GetInt32("UserId");
+            // Check to see if value is null
+            if(userId == null)
+            {
+                // Redirect to login page if there was nothing in session
+                context.Result = new RedirectToActionResult("Login", "User", null);
+            };
+        }
     }
 }

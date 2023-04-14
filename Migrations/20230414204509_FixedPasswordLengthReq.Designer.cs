@@ -3,6 +3,7 @@ using System;
 using BJHRApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20230414204509_FixedPasswordLengthReq")]
+    partial class FixedPasswordLengthReq
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,6 +54,10 @@ namespace BJHRApp.Migrations
 
                     b.Property<int>("AdminLevel")
                         .HasColumnType("int");
+
+                    b.Property<string>("Confirm")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .IsRequired()

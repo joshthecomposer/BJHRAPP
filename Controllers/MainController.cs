@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿#pragma warning disable CS8602
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 
 namespace BJHRApp.Controllers;
@@ -14,15 +16,15 @@ public class MainController : Controller
         _context = context;
     }
 
+    [SessionCheck]
     [HttpGet("/")]
     public IActionResult Index()
-    {
-        HttpContext.Session.SetInt32("UserId", 1);  //TODO: Get rid of this later, it is for access to index for dev purposes.
-        if (HttpContext.Session.GetInt32("UserId") is null)
-        {
-            return Redirect("/users/login");
-        }
-        return View("Index");
+    {   
+        int? userId = HttpContext.Session.GetInt32("UserId");
+        User? currentLoggedUser = _context.Users.FirstOrDefault(u => u.UserId == userId);
+        ViewBag.FirstName = currentLoggedUser.FirstName;
+        ViewBag.LastName = currentLoggedUser.LastName;
+        return View();
     }
 
     [HttpGet("/test")]
@@ -45,5 +47,20 @@ public class MainController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public class SessionCheckAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Find the session, but ensure to check for null
+            int? userId = context.HttpContext.Session.GetInt32("UserId");
+            // Check to see if value is null
+            if(userId == null)
+            {
+                // Redirect to login page if there was nothing in session
+                context.Result = new RedirectToActionResult("Login", "User", null);
+            };
+        }
     }
 }

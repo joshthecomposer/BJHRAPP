@@ -22,9 +22,10 @@ public class User
     //TODO: message-Brian I agree, this probably isn't actually required. Could likely set this to a default user value upon creation.
     public int AdminLevel { get; set;}
     [Required]
-    [MaxLength(8)]
+    [MinLength(8)]
     public string Password { get; set; }
     [Required]
+    [NotMapped]
     [Compare("Password")]
     public string Confirm { get; set; }
 
