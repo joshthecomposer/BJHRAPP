@@ -28,12 +28,6 @@ public class MainController : Controller
         return View();
     }
 
-    [HttpGet("/test")]
-    public IActionResult PlayGround()
-    {
-        return View("Test");
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
