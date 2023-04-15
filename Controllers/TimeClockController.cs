@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
+using System.Text.Json;
 
 namespace BJHRApp.Controllers;
 [Route("users/timeclock")]
@@ -38,13 +39,12 @@ public class TimeClockController : Controller
     {
         if (HttpContext.Session.GetInt32("UserId") == UserId)
         {
-            if (!IsPunchValid(UserId, DateTime.Now))
+            if (!IsPunchValid(UserId))
             {
                 return Redirect("/users/timeclock/"+UserId);
             }
             else
             {
-                Console.WriteLine("We made it");
                 _context.Add(new Punch { UserId = UserId });
                 _context.SaveChanges();
                 return Redirect("/users/timeclock/"+ HttpContext.Session.GetInt32("UserId"));
@@ -59,15 +59,16 @@ public class TimeClockController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    private bool IsPunchValid(int UserId, DateTime date)
+    private bool IsPunchValid(int UserId)
     {
-        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == date.Date).ToList();
+        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.Now.Date).ToList();
+        Console.WriteLine(JsonSerializer.Serialize(punches));
         if (punches != null)
         {
-            if (punches[punches.Count-1].Time.Minute - date.Minute < 30 )
+            Console.WriteLine(DateTime.Now.Minute - punches[punches.Count - 1].Time.Minute);
+            if (DateTime.Now.Minute - punches[punches.Count-1].Time.Minute < 30)
             {
-                Console.WriteLine($"{ punches[punches.Count - 1].Time.Minute} Input Date Minute {date.Minute}");
-                Console.WriteLine("Punch is invalid");
+                Console.WriteLine("Invalid Punch");
                 return false;
             }
             else
