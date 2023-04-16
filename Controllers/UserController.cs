@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
 using BJHRApp.Utilities;
