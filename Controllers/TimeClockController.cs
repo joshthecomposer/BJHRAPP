@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
+using BJHRApp.Utilities;
 using System.Text.Json;
 
 namespace BJHRApp.Controllers;
 [Route("users/timeclock")]
+[SessionCheck]
 public class TimeClockController : Controller
 {
     private readonly ILogger<TimeClockController> _logger;
@@ -17,52 +19,40 @@ public class TimeClockController : Controller
         _context = context;
     }
 
-    [SessionCheck]
+    [ClaimCheck]
     [HttpGet("{UserId}")]
     public IActionResult TimeClockDashboard(int UserId)
     {
-        if (HttpContext.Session.GetInt32("UserId") == UserId)
+        ViewBag.Punches = new List<Punch>();
+        ViewBag.LatestPunch = new Punch();
+        List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).ToList();
+        if (punches.Any())
         {
-            List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).ToList();
-
-            if (punches != null)
-            {
-                ViewBag.Punches = punches;
-            }
-            return View();
+            ViewBag.Punches = punches;
+            ViewBag.LatestPunch = punches.Last();
         }
-        return Redirect("/logout");
+        return View();
     }
 
-    [SessionCheck]
+    [ClaimCheck]
     [HttpPost("{UserId}/punch")]
     public RedirectResult CreatePunch(int UserId)
     {
-        if (HttpContext.Session.GetInt32("UserId") == UserId)
+        if (!IsPunchValid(UserId))
         {
-            if (!IsPunchValid(UserId))
-            {
-                return Redirect($"/users/timeclock/{UserId}");
-            }
-            Punch latestPunch = _context.Punches.OrderBy(p=>p.UpdatedAt).LastOrDefault()!;
-            if (latestPunch == null || latestPunch.ClockedIn==false)
-            {
-                _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
-            }
-            else
-            {
-                _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = false });
-            }
-            _context.SaveChanges();
             return Redirect($"/users/timeclock/{UserId}");
         }
-        return Redirect("/users/logout");
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        Punch latestPunch = _context.Punches.OrderBy(p=>p.UpdatedAt).LastOrDefault()!;
+        if (latestPunch == null)
+        {
+            _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
+        }
+        else
+        {
+            _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = !latestPunch.ClockedIn });
+        }
+        _context.SaveChanges();
+        return Redirect($"/users/timeclock/{UserId}");
     }
 
     private bool IsPunchValid(int UserId)
@@ -72,7 +62,7 @@ public class TimeClockController : Controller
         {
             return true;
         }
-        if (DateTime.Now.ToLocalTime() > punches[punches.Count-1].Time.AddMinutes(30))
+        if (DateTime.Now.ToLocalTime() > punches[punches.Count-1].Time.ToLocalTime().AddMinutes(30))
         {
             return true;
         }
@@ -82,18 +72,9 @@ public class TimeClockController : Controller
         }
     }
 
-    public class SessionCheckAttribute : ActionFilterAttribute
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
     {
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            // Find the session, but ensure to check for null
-            int? userId = context.HttpContext.Session.GetInt32("UserId");
-            // Check to see if value is null
-            if(userId == null)
-            {
-                // Redirect to login page if there was nothing in session
-                context.Result = new RedirectToActionResult("Login", "User", null);
-            };
-        }
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

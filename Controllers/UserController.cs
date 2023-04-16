@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
+using BJHRApp.Utilities;
 
 namespace BJHRApp.Controllers;
 [Route("users")]
@@ -29,15 +30,11 @@ public class UserController : Controller
     {
         if(ModelState.IsValid)
         {
-            // Instantiate the password hashyboi
             PasswordHasher<User> Hasher = new PasswordHasher<User>();
-            // Update the user password to be hashed AF
             newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
-            // Add the user to the DB
             _context.Add(newUser);
-            // Also add the user ID to session
             _context.SaveChanges();
-            HttpContext.Session.SetInt32("UserId", newUser.Id);
+            CreateSession(newUser);
             return Redirect("/");
         }
         else
@@ -55,27 +52,26 @@ public class UserController : Controller
     [HttpPost("login")]
     public IActionResult LoginAttempt(LoginUser loginUser)
     {
-        if(!ModelState.IsValid)
+        if(ModelState.IsValid)
         {
-            return View("Login");
+            User? userInDb = _context.Users.FirstOrDefault(u => u.Email == loginUser.Email);
+            if (userInDb == null)
+            {
+                return View("Login");
+            }
+            PasswordHasher<LoginUser> Hasher = new PasswordHasher<LoginUser>();
+            var Result = Hasher.VerifyHashedPassword(loginUser, userInDb.Password, loginUser.Password);
+            if(Result == 0)
+            {
+                ModelState.AddModelError("Password", "Invalid Email/Password");
+                return View("Login");
+            }
+            CreateSession(userInDb);
+            return Redirect("/");
         }
-        User? userInDb = _context.Users.FirstOrDefault(u => u.Email == loginUser.Email);
-        if (userInDb == null)
-        {
-            return View("Login");
-        }
-        PasswordHasher<LoginUser> Hasher = new PasswordHasher<LoginUser>();
-        var Result = Hasher.VerifyHashedPassword(loginUser, userInDb.Password, loginUser.Password);
-        if(Result == 0)
-        {
-            ModelState.AddModelError("Password", "Invalid Email/Password");
-            return View("Login");
-        }
-        HttpContext.Session.SetInt32("UserId", userInDb.Id);
-        return Redirect("/");
+        return View("Login");
     }
 
-    [SessionCheck]
     [HttpGet("logout")]
     public RedirectToActionResult Logout()
     {
@@ -83,7 +79,7 @@ public class UserController : Controller
         return RedirectToAction("Login");
     }
 
-    [SessionCheck]
+    [ClaimCheck]
     [HttpGet("settings/{UserId}")]
     public ViewResult Settings(int UserId)
     {
@@ -91,6 +87,7 @@ public class UserController : Controller
         return View(user);
     }
 
+    [ClaimCheck]
     [HttpPost("update/{UserId}")]
     public IActionResult Update(UpdateUser updateUser, int UserId)
     {
@@ -109,24 +106,17 @@ public class UserController : Controller
         }
     }
 
+    private void CreateSession(User user)
+    {
+        HttpContext.Session.SetInt32("UserId", user.Id);
+        HttpContext.Session.SetString("FirstName", user.FirstName);
+        HttpContext.Session.SetString("LastName", user.LastName);
+        HttpContext.Session.SetString("Email", user.Email);
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
-
-    public class SessionCheckAttribute : ActionFilterAttribute
-    {
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            // Find the session, but ensure to check for null
-            int? userId = context.HttpContext.Session.GetInt32("UserId");
-            // Check to see if value is null
-            if(userId == null)
-            {
-                // Redirect to login page if there was nothing in session
-                context.Result = new RedirectToActionResult("Login", "User", null);
-            };
-        }
     }
 }
