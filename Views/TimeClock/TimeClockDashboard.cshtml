@@ -23,15 +23,15 @@
                     <button type="submit" class="font-bold uppercase rounded bg-slate-500 text-slate-900 px-4 py-2 w-full">Punch In</button>
                 </form>
             </div>
-            <div class="bg-slate-700 px-4 py-2 flex flex-col gap-3 items-center justify-center">
+            <div class="bg-slate-700 px-4 py-2 flex flex-col gap-3 items-between justify-center">
             <!-- TODO: Do a foreach loop to fetch employee punches. -->
                 <div class="flex gap-3">
-                    <p class="text-slate-50 w-52 text-2xl">Date</p>
-                    <p class="text-slate-50 w-52 text-2xl">Shift In</p>
-                    <p class="text-slate-50 w-52 text-2xl">Break Start</p>
-                    <p class="text-slate-50 w-52 text-2xl">Break End</p>
-                    <p class="text-slate-50 w-52 text-2xl">Shift Out</p>
-                    <p class="text-slate-50 w-52 text-2xl">Hours</p>
+                    <p class="text-slate-50 w-52 px-4 text-2xl">Date</p>
+                    <p class="text-slate-50 w-52 px-4 text-2xl">Shift In</p>
+                    <p class="text-slate-50 w-52 px-4 text-2xl">Break Start</p>
+                    <p class="text-slate-50 w-52 px-4 text-2xl">Break End</p>
+                    <p class="text-slate-50 w-52 px-4 text-2xl">Shift Out</p>
+                    <p class="text-slate-50 w-52 px-4 text-2xl">Hours</p>
                 </div>
                 <div class="flex gap-3 flex-wrap">
                     @foreach(Punch p in ViewBag.Punches)

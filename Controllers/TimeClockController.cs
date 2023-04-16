@@ -24,6 +24,7 @@ public class TimeClockController : Controller
         if (HttpContext.Session.GetInt32("UserId") == UserId)
         {
             List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).ToList();
+
             if (punches != null)
             {
                 ViewBag.Punches = punches;
