@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BJHRApp.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace BJHRApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Locations",
+                name: "Location",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -33,7 +33,7 @@ namespace BJHRApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.PrimaryKey("PK_Location", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -60,15 +60,15 @@ namespace BJHRApp.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Locations_LocationId",
+                        name: "FK_Users_Location_LocationId",
                         column: x => x.LocationId,
-                        principalTable: "Locations",
+                        principalTable: "Location",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "HomeAddresses",
+                name: "HomeAddress",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -88,9 +88,9 @@ namespace BJHRApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomeAddresses", x => x.Id);
+                    table.PrimaryKey("PK_HomeAddress", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HomeAddresses_Users_UserId",
+                        name: "FK_HomeAddress_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -123,8 +123,8 @@ namespace BJHRApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HomeAddresses_UserId",
-                table: "HomeAddresses",
+                name: "IX_HomeAddress_UserId",
+                table: "HomeAddress",
                 column: "UserId",
                 unique: true);
 
@@ -142,7 +142,7 @@ namespace BJHRApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HomeAddresses");
+                name: "HomeAddress");
 
             migrationBuilder.DropTable(
                 name: "Punches");
@@ -151,7 +151,7 @@ namespace BJHRApp.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Location");
         }
     }
 }

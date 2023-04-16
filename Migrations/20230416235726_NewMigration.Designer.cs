@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230416234943_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20230416235726_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,7 +59,7 @@ namespace BJHRApp.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("HomeAddresses");
+                    b.ToTable("HomeAddress");
                 });
 
             modelBuilder.Entity("BJHRApp.Models.Location", b =>
@@ -94,7 +94,7 @@ namespace BJHRApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("BJHRApp.Models.Punch", b =>
