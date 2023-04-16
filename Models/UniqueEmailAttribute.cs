@@ -1,4 +1,3 @@
-//TODO: message-Brian Not sure where to put custom validations/annotations, but figured this could live here for now
 # pragma warning disable CS8600
 using System.ComponentModel.DataAnnotations;
 using BJHRApp.Data;

@@ -23,11 +23,13 @@ public class TimeClockController : Controller
     [HttpGet("{UserId}")]
     public IActionResult TimeClockDashboard(int UserId)
     {
+        ViewBag.Punches = new List<Punch>();
+        ViewBag.LatestPunch = new Punch();
         List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).ToList();
-
-        if (punches != null)
+        if (punches.Any())
         {
             ViewBag.Punches = punches;
+            ViewBag.LatestPunch = punches.Last();
         }
         return View();
     }
