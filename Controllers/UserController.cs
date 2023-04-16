@@ -30,15 +30,11 @@ public class UserController : Controller
     {
         if(ModelState.IsValid)
         {
-            // Instantiate the password hashyboi
             PasswordHasher<User> Hasher = new PasswordHasher<User>();
-            // Update the user password to be hashed AF
             newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
-            // Add the user to the DB
             _context.Add(newUser);
-            // Also add the user ID to session
             _context.SaveChanges();
-            HttpContext.Session.SetInt32("UserId", newUser.Id);
+            CreateSession(newUser);
             return Redirect("/");
         }
         else
@@ -56,24 +52,24 @@ public class UserController : Controller
     [HttpPost("login")]
     public IActionResult LoginAttempt(LoginUser loginUser)
     {
-        if(!ModelState.IsValid)
+        if(ModelState.IsValid)
         {
-            return View("Login");
+            User? userInDb = _context.Users.FirstOrDefault(u => u.Email == loginUser.Email);
+            if (userInDb == null)
+            {
+                return View("Login");
+            }
+            PasswordHasher<LoginUser> Hasher = new PasswordHasher<LoginUser>();
+            var Result = Hasher.VerifyHashedPassword(loginUser, userInDb.Password, loginUser.Password);
+            if(Result == 0)
+            {
+                ModelState.AddModelError("Password", "Invalid Email/Password");
+                return View("Login");
+            }
+            CreateSession(userInDb);
+            return Redirect("/");
         }
-        User? userInDb = _context.Users.FirstOrDefault(u => u.Email == loginUser.Email);
-        if (userInDb == null)
-        {
-            return View("Login");
-        }
-        PasswordHasher<LoginUser> Hasher = new PasswordHasher<LoginUser>();
-        var Result = Hasher.VerifyHashedPassword(loginUser, userInDb.Password, loginUser.Password);
-        if(Result == 0)
-        {
-            ModelState.AddModelError("Password", "Invalid Email/Password");
-            return View("Login");
-        }
-        HttpContext.Session.SetInt32("UserId", userInDb.Id);
-        return Redirect("/");
+        return View("Login");
     }
 
     [HttpGet("logout")]
@@ -108,6 +104,14 @@ public class UserController : Controller
         {
             return View("Settings", OldUser);
         }
+    }
+
+    private void CreateSession(User user)
+    {
+        HttpContext.Session.SetInt32("UserId", user.Id);
+        HttpContext.Session.SetString("FirstName", user.FirstName);
+        HttpContext.Session.SetString("LastName", user.LastName);
+        HttpContext.Session.SetString("Email", user.Email);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

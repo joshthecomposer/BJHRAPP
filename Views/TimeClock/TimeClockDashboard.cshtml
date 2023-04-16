@@ -8,7 +8,7 @@
                 <p class="text-slate-50 text-xl">March 13, 2023</p>
             </div>
         </div>
-        <h1 class="text-slate-50 text-5xl">Joshua Wise</h1>
+        <h1 class="text-slate-50 text-5xl"></h1>
     </div>
     <div class="ml-24 mr-5 bg-slate-800 shadow-lg px-6 pt-2 pb-4 flex flex-col gap-3">
         <p class="text-slate-50 text-xl">Time Clock</p>
@@ -36,7 +36,7 @@
                 <div class="flex gap-3 flex-wrap">
                     @foreach(Punch p in ViewBag.Punches)
                     {
-                        <p class="bg-slate-800 text-slate-400 w-52 px-4 py-2 text-xl text-center">@p.Time @p.ClockedIn</p>
+                        <p class="bg-slate-800 text-slate-400 w-52 px-4 py-2 text-xl text-center">@p.Time.ToLocalTime() @p.ClockedIn</p>
                     }
                 </div>
             </div>
