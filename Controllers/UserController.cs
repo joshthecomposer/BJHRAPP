@@ -97,6 +97,8 @@ public class UserController : Controller
             OldUser.LastName = updateUser.LastName;
             // _context.Add(OldUser);
             _context.SaveChanges();
+            HttpContext.Session.Clear();
+            CreateSession(OldUser);
             return Redirect("/");
         }
         else
