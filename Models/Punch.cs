@@ -7,9 +7,11 @@ namespace BJHRApp.Models;
 public class Punch : BaseEntity
 {
     [Required]
-    public DateTime Time { get; set; } = DateTime.Now.ToLocalTime();
+    public DateTime Time { get; set; } = DateTime.UtcNow;
     [Required]
     public int UserId { get; set; }
+    [Required]
+    public bool ClockedIn { get; set; }
 
     //DB Associations
     public User User { get; set; }

@@ -42,14 +42,19 @@ public class TimeClockController : Controller
         {
             if (!IsPunchValid(UserId))
             {
-                return Redirect("/users/timeclock/"+UserId);
+                return Redirect($"/users/timeclock/{UserId}");
+            }
+            Punch latestPunch = _context.Punches.OrderBy(p=>p.UpdatedAt).LastOrDefault()!;
+            if (latestPunch == null || latestPunch.ClockedIn==false)
+            {
+                _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
             }
             else
             {
-                _context.Add(new Punch { UserId = UserId });
-                _context.SaveChanges();
-                return Redirect("/users/timeclock/"+ HttpContext.Session.GetInt32("UserId"));
+                _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = false });
             }
+            _context.SaveChanges();
+            return Redirect($"/users/timeclock/{UserId}");
         }
         return Redirect("/users/logout");
     }

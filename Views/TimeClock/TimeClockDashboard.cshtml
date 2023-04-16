@@ -36,7 +36,7 @@
                 <div class="flex gap-3 flex-wrap">
                     @foreach(Punch p in ViewBag.Punches)
                     {
-                        <p class="bg-slate-800 text-slate-400 w-52 px-4 py-2 text-xl text-center">@p.Time</p>
+                        <p class="bg-slate-800 text-slate-400 w-52 px-4 py-2 text-xl text-center">@p.Time @p.ClockedIn</p>
                     }
                 </div>
             </div>
