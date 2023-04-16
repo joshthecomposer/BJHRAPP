@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BJHRApp.Migrations
 {
-    public partial class NewMigration : Migration
+    public partial class ToLocalTimeOnPunchTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

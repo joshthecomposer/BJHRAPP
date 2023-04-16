@@ -62,21 +62,18 @@ public class TimeClockController : Controller
     private bool IsPunchValid(int UserId)
     {
         List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.Now.Date).ToList();
-        Console.WriteLine(JsonSerializer.Serialize(punches));
-        if (punches != null)
+        if (!punches.Any())
         {
-            Console.WriteLine(DateTime.Now.Minute - punches[punches.Count - 1].Time.Minute);
-            if (DateTime.Now.Minute - punches[punches.Count-1].Time.Minute < 30)
-            {
-                Console.WriteLine("Invalid Punch");
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return true;
         }
-        return false;
+        if (DateTime.Now.ToLocalTime() > punches[punches.Count-1].Time.AddMinutes(30))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public class SessionCheckAttribute : ActionFilterAttribute

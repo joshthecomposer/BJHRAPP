@@ -2,11 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace BJHRApp.Models;
 public class Punch : BaseEntity
 {
     [Required]
-    public DateTime Time { get; set; } = DateTime.Now;
+    public DateTime Time { get; set; } = DateTime.Now.ToLocalTime();
     [Required]
     public int UserId { get; set; }
 

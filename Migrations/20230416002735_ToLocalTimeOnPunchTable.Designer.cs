@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230414232459_NewMigration")]
-    partial class NewMigration
+    [Migration("20230416002735_ToLocalTimeOnPunchTable")]
+    partial class ToLocalTimeOnPunchTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
