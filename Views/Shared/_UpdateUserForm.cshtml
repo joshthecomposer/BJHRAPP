@@ -1,0 +1,20 @@
+@model User
+    <form class="w-full max-w-lg bg-blue-900 bg-opacity-30 rounded shadow-lg py-6 px-5" action='/users/update/@Context.Session.GetInt32("UserId")' method="POST">
+    <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0"> 
+        <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-first-name" asp-for="FirstName">
+            First Name <span class="text-red-500" asp-validation-for="FirstName"></span>
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" asp-for="FirstName">
+        
+        </div>
+        <div class="w-full md:w-1/2 px-3">
+        <label class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2" for="grid-last-name" asp-for="LastName">
+            Last Name <span class="text-red-500" asp-validation-for="LastName"></span>
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe" asp-for="LastName">
+        </div>
+    </div>
+        <button class="bg-indigo-700 hover:bg-indigo-500 text-indigo-100 font-bold py-2 px-4 rounded w-full shadow-lg">Submit</button>
+        <p class="text-sm text-indigo-100 italic mt-4"><a class="text-indigo-300 hover:text-indigo-100 underline" href="/">Go Back</a></p>
+    </form>

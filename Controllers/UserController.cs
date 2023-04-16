@@ -85,9 +85,28 @@ public class UserController : Controller
 
     [SessionCheck]
     [HttpGet("settings/{UserId}")]
-    public ViewResult Settings()
+    public ViewResult Settings(int UserId)
     {
-        return View();
+        User? user = _context.Users.FirstOrDefault(u => u.Id == UserId);
+        return View(user);
+    }
+
+    [HttpPost("update/{UserId}")]
+    public IActionResult Update(UpdateUser updateUser, int UserId)
+    {
+        User? OldUser = _context.Users.FirstOrDefault(i => i.Id == UserId);
+        if(ModelState.IsValid)
+        {
+            OldUser.FirstName = updateUser.FirstName;
+            OldUser.LastName = updateUser.LastName;
+            // _context.Add(OldUser);
+            _context.SaveChanges();
+            return Redirect("/");
+        }
+        else
+        {
+            return View("Settings", OldUser);
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
