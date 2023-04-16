@@ -23,7 +23,7 @@ public class TimeClockController : Controller
     {
         ViewBag.Punches = new List<Punch>();
         ViewBag.LatestPunch = new Punch();
-        List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).ToList();
+        List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).OrderBy(p=>p.Time).ToList();
         if (punches.Any())
         {
             ViewBag.Punches = punches;
@@ -40,7 +40,7 @@ public class TimeClockController : Controller
         {
             return Redirect($"/users/timeclock/{UserId}");
         }
-        Punch latestPunch = _context.Punches.OrderBy(p=>p.UpdatedAt).LastOrDefault()!;
+        Punch? latestPunch = _context.Punches.Where(p=>p.UserId == UserId).OrderBy(p=>p.Time).LastOrDefault();
         if (latestPunch == null)
         {
             _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
@@ -58,7 +58,7 @@ public class TimeClockController : Controller
         //TODO: I will include a schedule check when they are implemented. - Josh
         List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.Now.Date).ToList();
         if (!punches.Any()) { return true; }
-        return (DateTime.Now.ToLocalTime() > punches[punches.Count - 1].Time.ToLocalTime().AddMinutes(30) ? true : false);
+        return (DateTime.Now.ToLocalTime() > punches[punches.Count - 1].Time.ToLocalTime().AddMinutes(1) ? true : false);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
