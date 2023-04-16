@@ -1,10 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
 using BJHRApp.Utilities;
-using System.Text.Json;
 
 namespace BJHRApp.Controllers;
 [Route("users/timeclock")]
