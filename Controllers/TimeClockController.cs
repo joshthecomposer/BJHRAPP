@@ -23,7 +23,10 @@ public class TimeClockController : Controller
     {
         ViewBag.Punches = new List<Punch>();
         ViewBag.LatestPunch = new Punch();
-        List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).OrderBy(p=>p.Time).ToList();
+        List<Punch> punches = _context.Punches
+                                .Where(p => p.UserId == UserId)
+                                .OrderBy(p=>p.Time)
+                                .ToList();
         if (punches.Any())
         {
             ViewBag.Punches = punches;
@@ -40,7 +43,10 @@ public class TimeClockController : Controller
         {
             return Redirect($"/users/timeclock/{UserId}");
         }
-        Punch? latestPunch = _context.Punches.Where(p=>p.UserId == UserId).OrderBy(p=>p.Time).LastOrDefault();
+        Punch? latestPunch = _context.Punches
+                                .Where(p=>p.UserId == UserId)
+                                .OrderBy(p=>p.Time)
+                                .LastOrDefault();
         if (latestPunch == null)
         {
             _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
