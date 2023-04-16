@@ -10,7 +10,7 @@
         </li>
         <hr class="border-slate-50 border-2 rounded my-5">
         <li class="mb-5">
-            <a href="/users/timeclock/">
+            <a href='/users/timeclock/@Context.Session.GetInt32("UserId")'>
                 <div class="circle bg-slate-700 h-12 rounded-full flex items-center justify-start pl-[12px] pb-[2px] gap-5 overflow-hidden">
                     <img src="~/img/calendar.svg" alt="">
                     <p class="text-lg text-slate-50 nav-item">Schedule/Time</p>

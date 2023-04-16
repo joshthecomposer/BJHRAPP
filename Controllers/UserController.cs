@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
+using BJHRApp.Utilities;
 
 namespace BJHRApp.Controllers;
 [Route("users")]
@@ -75,7 +76,6 @@ public class UserController : Controller
         return Redirect("/");
     }
 
-    [SessionCheck]
     [HttpGet("logout")]
     public RedirectToActionResult Logout()
     {
@@ -83,7 +83,7 @@ public class UserController : Controller
         return RedirectToAction("Login");
     }
 
-    [SessionCheck]
+    [ClaimCheck]
     [HttpGet("settings/{UserId}")]
     public ViewResult Settings(int UserId)
     {
@@ -91,6 +91,7 @@ public class UserController : Controller
         return View(user);
     }
 
+    [ClaimCheck]
     [HttpPost("update/{UserId}")]
     public IActionResult Update(UpdateUser updateUser, int UserId)
     {
@@ -113,20 +114,5 @@ public class UserController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
-
-    public class SessionCheckAttribute : ActionFilterAttribute
-    {
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            // Find the session, but ensure to check for null
-            int? userId = context.HttpContext.Session.GetInt32("UserId");
-            // Check to see if value is null
-            if(userId == null)
-            {
-                // Redirect to login page if there was nothing in session
-                context.Result = new RedirectToActionResult("Login", "User", null);
-            };
-        }
     }
 }
