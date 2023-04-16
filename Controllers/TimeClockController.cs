@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using BJHRApp.Models;
 using BJHRApp.Data;
+using System.Text.Json;
 
 namespace BJHRApp.Controllers;
 [Route("users/timeclock")]
@@ -23,6 +24,7 @@ public class TimeClockController : Controller
         if (HttpContext.Session.GetInt32("UserId") == UserId)
         {
             List<Punch> punches = _context.Punches.Where(p => p.UserId == UserId).ToList();
+
             if (punches != null)
             {
                 ViewBag.Punches = punches;
@@ -38,17 +40,21 @@ public class TimeClockController : Controller
     {
         if (HttpContext.Session.GetInt32("UserId") == UserId)
         {
-            if (!IsPunchValid(UserId, DateTime.Now))
+            if (!IsPunchValid(UserId))
             {
-                return Redirect("/users/timeclock/"+UserId);
+                return Redirect($"/users/timeclock/{UserId}");
+            }
+            Punch latestPunch = _context.Punches.OrderBy(p=>p.UpdatedAt).LastOrDefault()!;
+            if (latestPunch == null || latestPunch.ClockedIn==false)
+            {
+                _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
             }
             else
             {
-                Console.WriteLine("We made it");
-                _context.Add(new Punch { UserId = UserId });
-                _context.SaveChanges();
-                return Redirect("/users/timeclock/"+ HttpContext.Session.GetInt32("UserId"));
+                _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = false });
             }
+            _context.SaveChanges();
+            return Redirect($"/users/timeclock/{UserId}");
         }
         return Redirect("/users/logout");
     }
@@ -59,23 +65,21 @@ public class TimeClockController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    private bool IsPunchValid(int UserId, DateTime date)
+    private bool IsPunchValid(int UserId)
     {
-        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == date.Date).ToList();
-        if (punches != null)
+        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.Now.Date).ToList();
+        if (!punches.Any())
         {
-            if (punches[punches.Count-1].Time.Minute - date.Minute < 30 )
-            {
-                Console.WriteLine($"{ punches[punches.Count - 1].Time.Minute} Input Date Minute {date.Minute}");
-                Console.WriteLine("Punch is invalid");
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return true;
         }
-        return false;
+        if (DateTime.Now.ToLocalTime() > punches[punches.Count-1].Time.AddMinutes(30))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public class SessionCheckAttribute : ActionFilterAttribute
