@@ -57,7 +57,10 @@ public class TimeClockController : Controller
     {
         //TODO: I will include a schedule check when they are implemented. - Josh
         List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.Now.Date).ToList();
-        if (!punches.Any()) { return true; }
+        if (!punches.Any()) 
+        { 
+            return true; 
+        }
         return (DateTime.Now.ToLocalTime() > punches[punches.Count - 1].Time.ToLocalTime().AddMinutes(1) ? true : false);
     }
 
