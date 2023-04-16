@@ -25,12 +25,12 @@ public class TimeClockController : Controller
         ViewBag.LatestPunch = new Punch();
         List<Punch> punches = _context.Punches
                                 .Where(p => p.UserId == UserId)
-                                .OrderBy(p=>p.Time)
+                                .OrderByDescending(p=>p.Time)
                                 .ToList();
         if (punches.Any())
         {
             ViewBag.Punches = punches;
-            ViewBag.LatestPunch = punches.Last();
+            ViewBag.LatestPunch = punches.First();
         }
         return View();
     }
