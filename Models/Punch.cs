@@ -14,5 +14,5 @@ public class Punch : BaseEntity
     public bool ClockedIn { get; set; }
 
     //DB Associations
-    public User User { get; set; }
+    public User? User { get; set; }
 }

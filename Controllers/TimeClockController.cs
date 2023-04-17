@@ -62,12 +62,14 @@ public class TimeClockController : Controller
     private bool IsPunchValid(int UserId)
     {
         //TODO: I will include a schedule check when they are implemented. - Josh
-        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.Now.Date).ToList();
+
+        //TODO: This does not need to be a list, it cna just try to fetch the latest punch.
+        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.UtcNow.Date).ToList();
         if (!punches.Any()) 
-        { 
+        {
             return true; 
         }
-        return (DateTime.Now.ToLocalTime() > punches[punches.Count - 1].Time.ToLocalTime().AddMinutes(1) ? true : false);
+        return (DateTime.UtcNow > punches.Last().Time.AddMinutes(1) ? true : false);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
