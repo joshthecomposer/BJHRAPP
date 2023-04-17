@@ -7,7 +7,7 @@ public class Address : BaseEntity
 {
     [Required]
     public string Street { get; set; }
-    public string? Room { get; set; }
+    public string? StreetTwo { get; set; }
     [Required]
     public string City { get; set; }
     [Required]
