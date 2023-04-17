@@ -19,6 +19,82 @@ namespace BJHRApp.Migrations
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("BJHRApp.Models.HomeAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Room")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Zip")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("HomeAddress");
+                });
+
+            modelBuilder.Entity("BJHRApp.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Room")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Zip")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+                });
+
             modelBuilder.Entity("BJHRApp.Models.Punch", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +147,9 @@ namespace BJHRApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -80,7 +159,20 @@ namespace BJHRApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BJHRApp.Models.HomeAddress", b =>
+                {
+                    b.HasOne("BJHRApp.Models.User", "User")
+                        .WithOne("HomeAddress")
+                        .HasForeignKey("BJHRApp.Models.HomeAddress", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BJHRApp.Models.Punch", b =>
@@ -92,6 +184,25 @@ namespace BJHRApp.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BJHRApp.Models.User", b =>
+                {
+                    b.HasOne("BJHRApp.Models.Location", "Location")
+                        .WithMany("Users")
+                        .HasForeignKey("LocationId");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("BJHRApp.Models.Location", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("BJHRApp.Models.User", b =>
+                {
+                    b.Navigation("HomeAddress");
                 });
 #pragma warning restore 612, 618
         }

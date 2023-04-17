@@ -5,25 +5,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BJHRApp.Models;
 public class User : BaseEntity
 {
-    [Required(ErrorMessage="Field required")]
-    [MinLength(2, ErrorMessage ="At least 2 characters")]
+    [Required(ErrorMessage = "Field required")]
+    [MinLength(2, ErrorMessage = "At least 2 characters")]
     public string FirstName { get; set; }
-    [Required(ErrorMessage="Field required")]
-    [MinLength(2, ErrorMessage ="At least 2 characters")]
+    [Required(ErrorMessage = "Field required")]
+    [MinLength(2, ErrorMessage = "At least 2 characters")]
     public string LastName { get; set; }
     [UniqueEmail]
-    [EmailAddress(ErrorMessage ="Invalid email")]
+    [EmailAddress(ErrorMessage = "Invalid email")]
     public string Email { get; set; }
-    [Required]
-    public int AdminLevel { get; set;}
-    [Required(ErrorMessage="Field required")]
-    [MinLength(8, ErrorMessage ="At least 8 characters")]
+    public int AdminLevel { get; set; } = 0;
+    [Required(ErrorMessage = "Field required")]
+    [MinLength(8, ErrorMessage = "At least 8 characters")]
     public string Password { get; set; }
-    [Required (ErrorMessage="Field required")]
+    [Required(ErrorMessage = "Field required")]
     [NotMapped]
     [Compare("Password")]
     public string Confirm { get; set; }
 
-    //One user to many punches
+    //Foreign Keys
+    public int? LocationId { get; set; }
+
+    // DB Associations
     public List<Punch> Punches = new List<Punch>();
+    public HomeAddress? HomeAddress { get; set; }
+    public Location? Location { get; set; }
 }
