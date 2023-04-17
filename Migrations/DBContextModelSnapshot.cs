@@ -32,15 +32,15 @@ namespace BJHRApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Room")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Street")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StreetTwo")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -57,7 +57,7 @@ namespace BJHRApp.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("HomeAddress");
+                    b.ToTable("HomeAddresses");
                 });
 
             modelBuilder.Entity("BJHRApp.Models.Location", b =>
@@ -73,15 +73,15 @@ namespace BJHRApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Room")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Street")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StreetTwo")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -92,7 +92,7 @@ namespace BJHRApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location");
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("BJHRApp.Models.Punch", b =>
