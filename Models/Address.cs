@@ -1,13 +1,12 @@
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BJHRApp.Models;
 public class Address : BaseEntity
 {
     [Required]
     public string Street { get; set; }
-    public string? Room { get; set; }
+    public string? StreetTwo { get; set; }
     [Required]
     public string City { get; set; }
     [Required]
