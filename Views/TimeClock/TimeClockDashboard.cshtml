@@ -44,8 +44,8 @@
                     @foreach(Punch p in ViewBag.Punches)
                     {
                         <p 
-                            class="bg-slate-800 text-slate-400 px-4 py-2 text-xl text-center hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                            @p.Time.ToLocalTime() | Punch @(p.ClockedIn == true ? "In" : "Out")
+                            class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                            @p.Time.ToLocalTime().ToString("MMMM dd, yyyy hh:mm tt") | @(p.ClockedIn == true ? "In" : "Out")
                         </p>
                     }
                 </div>

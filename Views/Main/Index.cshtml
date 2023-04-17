@@ -3,14 +3,16 @@
     <div class="hidden md:inline w-72">
     </div>
     <div class="justify-center md:justify-start w-full md:w-3/5 bg-transparent flex gap-5 md:gap-10 flex-wrap self-center">
-        <h1 class="text-center md:text-left text-slate-50 text-2xl w-full"><span class="font-light tracking-wide">Welcome Back,</span>@ViewBag.FirstName</h1>
+        <h1 class="text-center md:text-left text-slate-50 text-2xl w-full"><span class="font-light tracking-wide">Welcome Back, </span>@ViewBag.FirstName</h1>
             <div class="relative flex flex-col"> 
-                <div class="w-28 bg-orange-500 z-0 h-28 rounded shadow-lg overflow-hidden">
-                    <div class="w-28  overflow-hidden inline-block">
-                        <div class="h-56 bg-orange-600 rotate-45 transform origin-top-right"></div>
+                <a href='/users/settings/@Context.Session.GetInt32("UserId")'>
+                    <div class="w-28 bg-orange-500 z-0 h-28 rounded shadow-lg overflow-hidden">
+                        <div class="w-28  overflow-hidden inline-block">
+                            <div class="h-56 bg-orange-600 rotate-45 transform origin-top-right"></div>
+                        </div>
                     </div>
-                </div>
-                <img class="dash-icon" src="~/img/user.svg" alt="">
+                    <img class="dash-icon" src="~/img/user.svg" alt="">
+                </a>
             </div>
             <div class="relative flex flex-col">
                 <div class="w-28 bg-blue-500 h-28 rounded shadow-lg overflow-hidden">
