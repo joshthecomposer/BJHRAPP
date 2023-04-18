@@ -1,10 +1,28 @@
-<div class="bg-slate-700 p-2 flex flex-col gap-2 justify-center items-center">
+<div class="bg-slate-700 p-4 flex flex-col gap-2 justify-center items-center">
     <div class="p-5 flex flex-col gap-4 w-52 items-center justify-between">
         <p class="text-xl text-center capitalize">
             Create Schedule
         </p>
     </div>
-    <form action="/schedules/create" method="post">
+    @model Schedule
+    <form action="/schedules/create" method="post" class="w-full max-w-lg bg-slate-900 bg-opacity-30 rounded shadow-lg py-6 px-6">
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <label asp-for="User" class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2">User</label>
+            <select asp-for="User" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">'
+                @foreach(User u in ViewBag.Users)
+                {
+                    <option>@u.FirstName @u.LastName</option>
+                }
+            </select>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <label asp-for="In" class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2">In</label>
+            <input asp-for="In" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"/>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <label asp-for="Out" class="block uppercase tracking-wide text-indigo-100 text-xs font-bold mb-2">Out</label>
+            <input  asp-for="Out" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"/>
+        </div>
         <button type="submit" class="font-bold uppercase rounded bg-slate-500 text-slate-900 px-4 py-2 w-full">
             Create Shift
         </button>
@@ -15,33 +33,6 @@
         <p class="text-slate-50 text-2xl">Schedule</p>
     </div>
     <div class="flex flex-col max-h-[350px] overflow-scroll overflow-x-hidden">
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
-        <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            IN 5:OO AM | OUT 13:30
-        </p>
         <p class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
             IN 5:OO AM | OUT 13:30
         </p>
