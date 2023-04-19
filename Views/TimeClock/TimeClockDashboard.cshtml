@@ -1,43 +1,52 @@
 @await Html.PartialAsync("_NavBar");
 
-<div class="mx-50 w-full h-screen absolute z-0 top-0 bg-gradient-to-r pt-10 from-[#1C2637] to-slate-900 flex flex-col gap-3">
+<div class="mx-50 w-full md:h-screen absolute z-0 top-0 bg-gradient-to-r pt-10 md:px-0 px-3 from-[#1C2637] to-slate-900 flex flex-col gap-3">
     @await Html.PartialAsync("_GreetingBar");
-
-    <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:ml-24 md:mr-5 bg-slate-800 shadow-lg w-full md:w-auto">
+    <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:ml-24 md:mr-5 bg-slate-800 md:w-auto w-full shadow-lg">
         <div class="flex flex-col gap-3">
-            <h2 class="text-slate-50 text-xl">Time Clock</h2>
+            <h2 class="text-slate-300 text-slate-50 text-xl font-light text-center">
+                @(ViewBag.LatestPunch.ClockedIn ? "You are on the clock" : "You are clocked out")
+            </h2>
             @await Html.PartialAsync("_TimePuncher", (Punch) ViewBag.LatestPunch)
         </div>
         <div class=" flex flex-col gap-3 items-between w-full">
-            <div class="flex justify-between">
-                <h2 class="text-slate-50 text-xl">Recent Punches</h2>
-                <div class="flex space-between gap-3 text-slate-50">
-                    <label for="Filter" class="text-slate-50 text-xl">Filter by Date</label>
-                    <input type="date" class="bg-slate-900 text-slate-400 px-4">
+            <div class="flex flex-col gap-5 md:justify-between md:flex-row">
+
+                <h2 class="text-slate-50 text-xl font-medium">
+                    <span class="font-light tracking-wide">
+                    Week of
+                    </span>
+                         @DateTime.Now.ToLocalTime().ToString("MMMM, dd yyyy")
+                </h2>
+                <div class="flex justify-between">
+                    <div class="flex space-between gap-3 text-slate-50">
+                        <label for="Filter" class="text-slate-400">Filter by Date</label>
+                        <input type="date" class="bg-slate-900 text-slate-400 px-4">
+                    </div>
                 </div>
             </div>
-            <div class="flex flex-col gap-3 bg-slate-700 h-full py-5 px-3">
+            <div class="flex flex-col gap-3 bg-slate-700 overflow-y-scroll max-h-[325px] py-5 px-3">
                 @for(int i = 0; i < ViewBag.Punches.Count; i+=2)
                 {
-                    <div class="flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex md:flex-row md:gap-6 gap-2 items-center">
                         <div class="flex gap-2 items-center">
-                            <p class="text-slate-50">In</p>
+                            <p class="text-slate-400 text-xs md:text-lg">In</p>
                             <p
-                                class="bg-slate-800 w-52 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                                @ViewBag.Punches[i].Time.ToLocalTime().ToString("MMMM dd, hh:mm tt")
+                                class="bg-slate-800 text-xs w-16 md:w-32 md:text-xl text-slate-400 md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                @ViewBag.Punches[i].Time.ToLocalTime().ToString("hh:mm tt")
                             </p>
                         </div>
                         <div class="flex gap-2 items-center">
-                            <p class="text-slate-50">Out</p>
+                            <p class="text-slate-400 text-xs md:text-lg">Out</p>
                             <p
-                                class="bg-slate-800 w-52 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                                @(i+1 >= ViewBag.Punches.Count ? ". . ." : ViewBag.Punches[i+1].Time.ToLocalTime().ToString("MMMM dd, hh:mm tt"))
+                                class="bg-slate-800 text-xs w-16 md:w-32 text-slate-400 md:px-4 px-2 py-2 md:text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                @(i+1 >= ViewBag.Punches.Count ? ". . ." : ViewBag.Punches[i+1].Time.ToLocalTime().ToString("hh:mm tt"))
                             </p>
                         </div>
                         <div class="flex gap-2 items-center">
-                            <p class="text-slate-50">Hours</p>
+                            <p class="text-slate-400 text-xs md:text-lg">Hours</p>
                             <p
-                                class="bg-slate-800 w-20 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                class="bg-slate-800 w-10 md:w-20 text-slate-400 text-xs md:text-xl md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
                                 @(i+1 >= ViewBag.Punches.Count ? ". . ." : Math.Round((ViewBag.Punches[i+1].Time - ViewBag.Punches[i].Time).TotalHours, 2))
                             </p>
                         </div>
