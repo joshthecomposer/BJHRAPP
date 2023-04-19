@@ -36,17 +36,27 @@
                     </button>
                 </form>
             </div>
-            <div class="bg-slate-700 px-4 py-2 flex flex-col gap-3 items-between justify-center">
-                <div class="flex gap-3">
-                    <p class="text-slate-50 text-2xl">Punches</p>
-                </div>
-                <div class="flex flex-col max-h-[350px] overflow-scroll overflow-x-hidden">
-                    @foreach(Punch p in ViewBag.Punches)
+            <div class="bg-slate-700 px-4 py-2 flex flex-col gap-3 items-between w-full">
+                <p class="text-slate-50 text-2xl">Recent Punches</p>
+                <div class="flex flex-col gap-3 max-h-[500px] overflow-scroll overflow-x-hidden">
+                    @for(int i = 0; i < ViewBag.Punches.Count; i+=2)
                     {
-                        <p 
-                            class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                            @p.Time.ToLocalTime().ToString("MMMM dd, yyyy hh:mm tt") | @(p.ClockedIn == true ? "In" : "Out")
-                        </p>
+                        <div class="flex gap-6 items-center">
+                            <div class="flex gap-2 items-center">
+                                <p class="text-slate-50">In</p>
+                                <p
+                                    class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                    @ViewBag.Punches[i].Time.ToLocalTime().ToString("MMMM dd, hh:mm tt")
+                                </p>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <p class="text-slate-50">Out</p>
+                                <p
+                                    class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                    @(i+1 >= ViewBag.Punches.Count ? null : ViewBag.Punches[i+1].Time.ToLocalTime().ToString("MMMM dd, hh:mm tt"))
+                                </p>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>
@@ -54,3 +64,10 @@
     </div>
 </div>
 </div>
+
+
+
+@* <p 
+    class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+    @p.Time.ToLocalTime().ToString("MMMM dd, yyyy hh:mm tt") | @(p.ClockedIn == true ? "In" : "Out")
+</p> *@

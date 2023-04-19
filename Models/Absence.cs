@@ -11,6 +11,7 @@ public class Absence : BaseEntity
         //  1 for PTO
         //  2 for Sick Day
         //  ...extended as needed.
+        // this could also just be an enum actually.
     public int AbsenceType { get; set; }
 
 }

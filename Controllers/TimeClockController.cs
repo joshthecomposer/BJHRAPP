@@ -25,12 +25,12 @@ public class TimeClockController : Controller
         ViewBag.LatestPunch = new Punch();
         List<Punch> punches = _context.Punches
                                 .Where(p => p.UserId == UserId)
-                                .OrderByDescending(p=>p.Time)
+                                .Take(40)
                                 .ToList();
         if (punches.Any())
         {
             ViewBag.Punches = punches;
-            ViewBag.LatestPunch = punches.First();
+            ViewBag.LatestPunch = punches.Last();
         }
         return View();
     }
@@ -62,14 +62,14 @@ public class TimeClockController : Controller
     private bool IsPunchValid(int UserId)
     {
         //TODO: I will include a schedule check when they are implemented. - Josh
-
-        //TODO: This does not need to be a list, it cna just try to fetch the latest punch.
-        List<Punch>? punches = _context.Punches.Where(p => p.UserId == UserId && p.Time.Date == DateTime.UtcNow.Date).ToList();
-        if (!punches.Any()) 
+        Punch? punch = _context.Punches.Where(p => p.UserId == UserId).OrderBy(punch=>punch.Time).LastOrDefault();
+        if (punch == null) 
         {
+            Console.WriteLine("Punch is null");
             return true; 
         }
-        return (DateTime.UtcNow > punches.Last().Time.AddMinutes(1) ? true : false);
+        Console.WriteLine("Punch was not null and got to ternary.");
+        return (DateTime.UtcNow > punch.Time.AddMinutes(1) ? true : false);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
