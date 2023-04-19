@@ -1,73 +1,59 @@
 @await Html.PartialAsync("_NavBar");
-@{
-    string punchStatusColor = "";
-    @(ViewBag.LatestPunch.ClockedIn ? punchStatusColor = "green" : punchStatusColor = "red");
-}
 
-<div class="mx-50 h-screen w-full fixed z-0 top-0 p-5 bg-gradient-to-r from-[#1C2637] to-slate-900 flex flex-col gap-3">
-<div class="p-10 md:p-0 flex-col gap-5 flex">
-    <div class="ml-24 mr-5 bg-slate-800 shadow-lg px-6 py-5">
-        <div class="flex justify-between">
-            <div class="flex flex-col gap-2">
-                <p class="text-slate-50 text-xl">Welcome back</p>
-                <span class="text-slate-50 font-bold text-3xl">@Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</span>
-            </div>
-            <div>
-                <p class="text-slate-50 text-xl">@DateTime.Now.ToLocalTime().ToString("MMMM dd, yyyy")</p>
-            </div>
+<div class="mx-50 w-full md:h-screen absolute z-0 top-0 bg-gradient-to-r pt-10 md:px-0 px-3 from-[#1C2637] to-slate-900 flex flex-col gap-3">
+    @await Html.PartialAsync("_GreetingBar");
+    <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:ml-24 md:mr-5 bg-slate-800 md:w-auto w-full shadow-lg">
+        <div class="flex flex-col gap-3 items-center">
+            <h2 class="text-slate-300 text-slate-50 text-xl font-light text-center">
+                @(ViewBag.LatestPunch.ClockedIn ? "You are on the clock" : "You are clocked out")
+            </h2>
+            @await Html.PartialAsync("_TimePuncher", (Punch) ViewBag.LatestPunch)
         </div>
-        <h1 class="text-slate-50 text-5xl"></h1>
-    </div>
-    <div class="ml-24 mr-5 bg-slate-800 shadow-lg px-6 pt-2 pb-4 flex flex-col gap-3">
-        <p class="text-slate-50 text-xl">Time Clock</p>
-        <div class="flex gap-3">
-            <div class="bg-slate-700 p-2 flex flex-col gap-2 justify-center items-center">
-                <div class="rounded border-4 border-@punchStatusColor-500 p-5 flex flex-col gap-4 w-52 items-center justify-between">
-                        <p class="text-@punchStatusColor-500 text-xl text-center capitalize">
-                            @(ViewBag.LatestPunch.ClockedIn ? "Currently Working" : "Clocked Out")
-                        </p>
-                        <svg class="fill-@punchStatusColor-500 w-[130px] h-[130px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M24 2v22h-24v-22h3v1c0 1.103.897 2 2 2s2-.897 2-2v-1h10v1c0 1.103.897 2 2 2s2-.897 2-2v-1h3zm-2 6h-20v14h20v-14zm-2-7c0-.552-.447-1-1-1s-1 .448-1 1v2c0 .552.447 1 1 1s1-.448 1-1v-2zm-14 2c0 .552-.447 1-1 1s-1-.448-1-1v-2c0-.552.447-1 1-1s1 .448 1 1v2zm1 11.729l.855-.791c1 .484 1.635.852 2.76 1.654 2.113-2.399 3.511-3.616 6.106-5.231l.279.64c-2.141 1.869-3.709 3.949-5.967 7.999-1.393-1.64-2.322-2.686-4.033-4.271z"/>
-                        </svg>
+        <div class=" flex flex-col gap-3 items-between w-full">
+            <div class="flex flex-col gap-5 md:justify-between md:flex-row">
+
+                <h2 class="text-slate-50 text-xl font-medium">
+                    <span class="font-light tracking-wide">
+                    Activity for
+                    </span>
+                         @DateTime.Now.ToLocalTime().ToString("MMMM, dd yyyy")
+                </h2>
+                <div class="flex justify-between">
+                    <div class="flex space-between gap-3 text-slate-50">
+                        <label for="Filter" class="text-slate-400">Filter by Date</label>
+                        <input type="date" class="bg-slate-900 text-slate-400 px-4">
+                    </div>
                 </div>
-                <form action='/users/timeclock/@Context.Session.GetInt32("UserId")/punch' method="post">
-                    <button type="submit" class="font-bold uppercase rounded bg-slate-500 text-slate-900 px-4 py-2 w-full">
-                        @(ViewBag.LatestPunch.ClockedIn ? "Clock Out" : "Clock In")
-                    </button>
-                </form>
             </div>
-            <div class="bg-slate-700 px-4 py-2 flex flex-col gap-3 items-between w-full">
-                <p class="text-slate-50 text-2xl">Recent Punches</p>
-                <div class="flex flex-col gap-3 max-h-[500px] overflow-scroll overflow-x-hidden">
-                    @for(int i = 0; i < ViewBag.Punches.Count; i+=2)
-                    {
-                        <div class="flex gap-6 items-center">
-                            <div class="flex gap-2 items-center">
-                                <p class="text-slate-50">In</p>
-                                <p
-                                    class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                                    @ViewBag.Punches[i].Time.ToLocalTime().ToString("MMMM dd, hh:mm tt")
-                                </p>
-                            </div>
-                            <div class="flex gap-2 items-center">
-                                <p class="text-slate-50">Out</p>
-                                <p
-                                    class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                                    @(i+1 >= ViewBag.Punches.Count ? null : ViewBag.Punches[i+1].Time.ToLocalTime().ToString("MMMM dd, hh:mm tt"))
-                                </p>
-                            </div>
+            <div class="flex flex-col gap-3 bg-slate-700 overflow-y-scroll max-h-[325px] py-5 px-3">
+                @for(int i = 0; i < ViewBag.Punches.Count; i+=2)
+                {
+                    <div class="flex md:flex-row md:gap-6 gap-2 items-center">
+                        <div class="flex gap-2 items-center">
+                            <p class="text-slate-400 text-xs md:text-lg">In</p>
+                            <p
+                                class="bg-slate-800 text-xs w-16 md:w-32 md:text-xl text-slate-400 md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                @ViewBag.Punches[i].Time.ToLocalTime().ToString("hh:mm tt")
+                            </p>
                         </div>
-                    }
-                </div>
+                        <div class="flex gap-2 items-center">
+                            <p class="text-slate-400 text-xs md:text-lg">Out</p>
+                            <p
+                                class="bg-slate-800 text-xs w-16 md:w-32 text-slate-400 md:px-4 px-2 py-2 md:text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                @(i+1 >= ViewBag.Punches.Count ? ". . ." : ViewBag.Punches[i+1].Time.ToLocalTime().ToString("hh:mm tt"))
+                            </p>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <p class="text-slate-400 text-xs md:text-lg">Hours</p>
+                            <p
+                                class="bg-slate-800 w-10 md:w-20 text-slate-400 text-xs md:text-xl md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+                                @(i+1 >= ViewBag.Punches.Count ? ". . ." : Math.Round((ViewBag.Punches[i+1].Time - ViewBag.Punches[i].Time).TotalHours, 2))
+                            </p>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
+
 </div>
-</div>
-
-
-
-@* <p 
-    class="bg-slate-800 text-slate-400 px-4 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-    @p.Time.ToLocalTime().ToString("MMMM dd, yyyy hh:mm tt") | @(p.ClockedIn == true ? "In" : "Out")
-</p> *@
