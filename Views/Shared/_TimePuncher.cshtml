@@ -3,6 +3,12 @@
     ViewBag.PunchStatusColor = Model.ClockedIn ? "green" : "red";
 }
 
+<style>
+    button:active {
+        transform: translateY(3px);
+    }
+</style>
+
 <div class="flex md:flex-row flex-col gap-3">
     <div class="bg-slate-700 py-5 px-3 flex flex-col gap-2 justify-center items-center">
         <div class="rounded-lg border-4 border-@ViewBag.PunchStatusColor-500 py-10 flex flex-col gap-4 w-52 items-center justify-between">
@@ -14,7 +20,7 @@
             </svg>
         </div>
         <form action='/users/timeclock/@Context.Session.GetInt32("UserId")/punch' method="post">
-            <button type="submit" class="transition-all duration-500 font-bold uppercase rounded bg-slate-500 text-slate-50 px-4 py-2 w-full hover:bg-fuchsia-700">
+            <button type="submit" class="font-bold uppercase rounded bg-slate-500 text-slate-50 px-4 py-2 w-full hover:bg-slate-400">
                 @(Model.ClockedIn ? "Clock Out" : "Clock In")
             </button>
         </form>
