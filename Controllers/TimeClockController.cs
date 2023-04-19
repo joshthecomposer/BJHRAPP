@@ -24,7 +24,7 @@ public class TimeClockController : Controller
         ViewBag.Punches = new List<Punch>();
         ViewBag.LatestPunch = new Punch();
         List<Punch> punches = _context.Punches
-                                .Where(p => p.UserId == UserId)
+                                .Where(p => p.UserId == UserId && p.Time.Date==DateTime.UtcNow.Date)
                                 .OrderBy(p=>p.Time)
                                 .ToList();
 
