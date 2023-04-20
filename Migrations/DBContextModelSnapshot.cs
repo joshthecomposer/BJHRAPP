@@ -101,13 +101,13 @@ namespace BJHRApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("ClockedIn")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("Time")
+                    b.Property<DateTime>("TimeIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("TimeOut")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("UpdatedAt")

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BJHRApp.Migrations
 {
-    public partial class NewMigration : Migration
+    public partial class AlterPunchesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace BJHRApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                name: "Locations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,7 +23,7 @@ namespace BJHRApp.Migrations
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Street = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Room = table.Column<string>(type: "longtext", nullable: true)
+                    StreetTwo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     City = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -33,7 +33,7 @@ namespace BJHRApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -60,15 +60,15 @@ namespace BJHRApp.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Location_LocationId",
+                        name: "FK_Users_Locations_LocationId",
                         column: x => x.LocationId,
-                        principalTable: "Location",
+                        principalTable: "Locations",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "HomeAddress",
+                name: "HomeAddresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -78,7 +78,7 @@ namespace BJHRApp.Migrations
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Street = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Room = table.Column<string>(type: "longtext", nullable: true)
+                    StreetTwo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     City = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -88,9 +88,9 @@ namespace BJHRApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomeAddress", x => x.Id);
+                    table.PrimaryKey("PK_HomeAddresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HomeAddress_Users_UserId",
+                        name: "FK_HomeAddresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -104,9 +104,9 @@ namespace BJHRApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Time = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TimeIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TimeOut = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ClockedIn = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -123,8 +123,8 @@ namespace BJHRApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HomeAddress_UserId",
-                table: "HomeAddress",
+                name: "IX_HomeAddresses_UserId",
+                table: "HomeAddresses",
                 column: "UserId",
                 unique: true);
 
@@ -142,7 +142,7 @@ namespace BJHRApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HomeAddress");
+                name: "HomeAddresses");
 
             migrationBuilder.DropTable(
                 name: "Punches");
@@ -151,7 +151,7 @@ namespace BJHRApp.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Locations");
         }
     }
 }

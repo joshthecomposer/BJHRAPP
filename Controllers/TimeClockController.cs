@@ -22,55 +22,47 @@ public class TimeClockController : Controller
     public IActionResult TimeClockDashboard(int UserId)
     {
         ViewBag.Punches = new List<Punch>();
-        ViewBag.LatestPunch = new Punch();
         List<Punch> punches = _context.Punches
-                                .Where(p => p.UserId == UserId && p.Time.Date==DateTime.UtcNow.Date)
-                                .OrderBy(p=>p.Time)
+                                .Where(p => p.UserId == UserId)
+                                .OrderBy(p => p.TimeIn)
                                 .ToList();
-
+        Punch latest = new Punch();
+        Console.WriteLine("TIME IN ON NULL PUNCH??? "+latest.TimeIn);
         if (punches.Any())
         {
+            latest = punches.Last();
             ViewBag.Punches = punches;
-            ViewBag.LatestPunch = punches.Last();
         }
-        return View();
+
+        return View(latest);
     }
 
     [ClaimCheck]
     [HttpPost("{UserId}/punch")]
     public RedirectResult CreatePunch(int UserId)
     {
-        if (!IsPunchValid(UserId))
+        List<Punch> punches = _context.Punches
+                                .Where(p => p.UserId == UserId)
+                                .OrderBy(p => p.TimeIn)
+                                .ToList();
+        if (!punches.Any())
         {
+            _context.Punches.Add(new Punch {UserId = UserId, TimeIn = DateTime.UtcNow });
+            _context.SaveChanges();
             return Redirect($"/users/timeclock/{UserId}");
         }
-        Punch? latestPunch = _context.Punches
-                                .Where(p=>p.UserId == UserId)
-                                .OrderBy(p=>p.Time)
-                                .LastOrDefault();
-        if (latestPunch == null)
+        Punch latest = punches.Last();
+        if (latest.TimeOut == null)
         {
-            _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = true });
+            latest.TimeOut = DateTime.UtcNow;
+            _context.SaveChanges();
         }
         else
         {
-            _context.Punches.Add(new Punch { UserId = UserId, ClockedIn = !latestPunch.ClockedIn });
+             _context.Punches.Add(new Punch {UserId = UserId, TimeIn = DateTime.UtcNow });
+             _context.SaveChanges();
         }
-        _context.SaveChanges();
         return Redirect($"/users/timeclock/{UserId}");
-    }
-
-    private bool IsPunchValid(int UserId)
-    {
-        //TODO: I will include a schedule check when they are implemented. - Josh
-        Punch? punch = _context.Punches.Where(p => p.UserId == UserId).OrderBy(punch=>punch.Time).LastOrDefault();
-        if (punch == null) 
-        {
-            Console.WriteLine("Punch is null");
-            return true; 
-        }
-        Console.WriteLine("Punch was not null and got to ternary.");
-        return (DateTime.UtcNow > punch.Time.AddMinutes(1) ? true : false);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
