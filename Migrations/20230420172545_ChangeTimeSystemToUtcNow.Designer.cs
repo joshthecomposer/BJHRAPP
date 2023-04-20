@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230417053217_ChangeAddressRoomPropertyToStreetTwo")]
-    partial class ChangeAddressRoomPropertyToStreetTwo
+    [Migration("20230420172545_ChangeTimeSystemToUtcNow")]
+    partial class ChangeTimeSystemToUtcNow
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,13 +103,13 @@ namespace BJHRApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("ClockedIn")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("Time")
+                    b.Property<DateTime>("TimeIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("TimeOut")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("UpdatedAt")

@@ -1,6 +1,6 @@
 
 @{
-    ViewBag.PunchStatusColor = Model.ClockedIn ? "indigo" : "gray";
+    ViewBag.PunchStatusColor = Model.TimeIn.Year == 0001 ? "gray" : Model.TimeOut == null ? "indigo" : "gray";
 }
 
 <style>
@@ -20,7 +20,7 @@
         </div>
         <form action='/users/timeclock/@Context.Session.GetInt32("UserId")/punch' method="post">
             <button type="submit" class="font-bold uppercase rounded bg-indigo-600 text-slate-50 px-4 py-2 w-full hover:bg-indigo-500">
-                @(Model.ClockedIn ? "Clock Out" : "Clock In")
+                @(Model.TimeIn.Year == 0001 ? "Clock In" : Model.TimeOut == null ? "Clock out" : "Clock In")
             </button>
         </form>
     </div>
