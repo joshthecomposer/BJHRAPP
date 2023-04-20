@@ -46,7 +46,8 @@ public class TimeClockController : Controller
         string url = $"/users/timeclock/{userId}/{date.Year}/{date.Month}/{date.Day}";
         return Redirect(url);
     }
-
+    //TODO: Comgbing filter function into normal punch
+    //TODO: Filter into a weekly view instead of daily view.
     [ClaimCheck]
     [HttpGet("{userId}/{year}/{month}/{day}")]
     public IActionResult FilterPunchView(int userId, int year, int month, int day)
@@ -56,9 +57,14 @@ public class TimeClockController : Controller
         //TODO: See if we need to do a check for timeout as well.
         List<Punch> punches = _context.Punches.Where(p => p.UserId == userId && (p.TimeIn.Date == queryDate)).ToList();
         Punch latest = new Punch();
+        //This checkIfAny is there so that the time puncher button relies only on the actual latest punch, not the latest in the view list
+        var checkIfAny = _context.Punches.Where(p => p.UserId == userId).OrderBy(p => p.TimeIn).LastOrDefault()!;
+        if (checkIfAny != null)
+        {
+            latest = checkIfAny;
+        }
         if (punches.Any())
         {
-            latest = punches.Last();
             ViewBag.Punches = punches;
         }
         ViewBag.Date = new DateTime(year, month, day);
