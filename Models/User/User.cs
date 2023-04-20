@@ -1,6 +1,7 @@
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BJHRApp.Utilities;
 
 namespace BJHRApp.Models;
 public class User : BaseEntity
