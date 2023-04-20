@@ -19,12 +19,15 @@
                     <span class="font-light tracking-wide text-slate-50">
                     Activity for
                     </span>
-                         @DateTime.Now.ToLocalTime().ToString("MMMM, dd yyyy")
+                         @ViewBag.Date.ToString("MMMM, dd yyyy")
                 </h2>
                 <div class="flex justify-between">
                     <div class="flex space-between gap-3 text-slate-50">
-                        <label for="Filter" class="text-slate-400">Filter by Date</label>
-                        <input type="date" class="bg-slate-900 text-slate-400 px-4">
+                        <form action='/users/timeclock/@Context.Session.GetInt32("UserId")/createfilter' method="POST">
+                            <label for="Filter" class="text-slate-400">Filter by Date</label>
+                            <input name="QueryDate" type="date" class="bg-slate-900 text-slate-400 px-4">
+                            <button class="">Search</button>
+                        </form>
                     </div>
                 </div>
             </div>

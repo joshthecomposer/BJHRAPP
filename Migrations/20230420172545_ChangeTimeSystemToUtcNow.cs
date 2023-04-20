@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BJHRApp.Migrations
 {
-    public partial class AlterPunchesTable : Migration
+    public partial class ChangeTimeSystemToUtcNow : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

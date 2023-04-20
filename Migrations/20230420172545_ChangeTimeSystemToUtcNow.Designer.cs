@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230420160316_AlterPunchesTable")]
-    partial class AlterPunchesTable
+    [Migration("20230420172545_ChangeTimeSystemToUtcNow")]
+    partial class ChangeTimeSystemToUtcNow
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
