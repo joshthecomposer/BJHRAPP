@@ -50,7 +50,7 @@
                             <p class="text-slate-400 text-xs md:text-lg">Hours</p>
                             <p
                                 class="bg-slate-800 w-10 md:w-20 text-slate-400 text-xs md:text-xl md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-                                @((p.TimeOut - p.TimeIn))
+                                @(p.TimeOut == null ? ". . ." : Math.Round(((DateTime)p.TimeOut - p.TimeIn).TotalHours, 2))
                             </p>
                         </div>
                     </div>
