@@ -109,10 +109,17 @@ public class TimeClockController : Controller
         return Redirect($"/users/timeclock/{userId}");
     }
 
-    [HttpPost("{userId}/punch/custom")]
-    public RedirectResult CreateCustomPunch()
+    [HttpPost("punch/custom")]
+    public IActionResult CreateCustomPunch(CustomPunch input)
     {
-        return Redirect("/users/timeclock/{userId}");
+        if (HttpContext.Session.GetInt32("UserId") == input.UserId)
+        {
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("=========MODEL STATE WAS VALID========");
+            }
+        }
+        return Redirect($"/users/timeclock/" + input.UserId);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
