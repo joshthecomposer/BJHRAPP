@@ -52,6 +52,8 @@ public class TimeClockController : Controller
             return Redirect($"/users/timeclock/{UserId}");
         }
         Punch latest = punches.Last();
+        // if (DateTime.UtcNow > punchTime.AddMinutes(1))
+
         if (latest.TimeOut == null)
         {
             latest.TimeOut = DateTime.UtcNow;
