@@ -9,6 +9,9 @@
     }
 </style>
 
+<h2 class="text-slate-50 text-xl font-light text-center">
+    You are <span class="text-@ViewBag.PunchStatusColor-400 font-medium capitalize">@(Model.TimeIn.Year == 0001 ? "clocked out" : Model.TimeOut != null ? "clocked out" : "clocked in")</span>
+</h2>
 <div class="flex md:flex-row flex-col gap-3 max-h-[325px] w-4/5 md:w-auto">
     <div class="py-5 px-3 flex flex-col gap-2 justify-center items-center border-4 rounded-2xl border-@ViewBag.PunchStatusColor-500 w-full md:w-52">
         <div class="rounded-lg py-10 flex flex-col gap-4 items-center justify-between">

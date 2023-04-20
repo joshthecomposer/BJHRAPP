@@ -21,15 +21,16 @@ public class TimeClockController : Controller
     [HttpGet("{userId}")]
     public IActionResult TimeClockDashboard(int userId)
     {
+        //TODO: Create a timepunch status user class for easier ternaries in the views.
         ViewBag.Punches = new List<Punch>();
         List<Punch> punches = _context.Punches
                                 .Where(p => p.UserId == userId)
-                                .OrderBy(p => p.TimeIn)
+                                .OrderByDescending(p => p.TimeIn)
                                 .ToList();
         Punch latest = new Punch();
         if (punches.Any())
         {
-            latest = punches.Last();
+            latest = punches.First();
             ViewBag.Punches = punches;
         }
         ViewBag.Date = DateTime.Now;
@@ -42,6 +43,10 @@ public class TimeClockController : Controller
     public RedirectResult CreateFilterUrl(object sender, EventArgs e, int userId)
     {
         string input = Request.Form["QueryDate"]!;
+        if (input == String.Empty)
+        {
+            return Redirect($"/users/timeclock/{userId}");
+        }
         DateTime date = DateTime.Parse(input);
         string url = $"/users/timeclock/{userId}/{date.Year}/{date.Month}/{date.Day}";
         return Redirect(url);
