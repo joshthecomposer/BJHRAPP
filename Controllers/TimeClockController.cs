@@ -51,7 +51,7 @@ public class TimeClockController : Controller
         string url = $"/users/timeclock/{userId}/{date.Year}/{date.Month}/{date.Day}";
         return Redirect(url);
     }
-    //TODO: Comgbing filter function into normal punch
+    //TODO: Combine filter function into normal punch
     //TODO: Filter into a weekly view instead of daily view.
     [ClaimCheck]
     [HttpGet("{userId}/{year}/{month}/{day}")]
