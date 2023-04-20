@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace BJHRApp.Models;
-public class CustomPunch : BaseEntity
+public class CustomPunch
 {
     [Required(ErrorMessage = "Field required.")]
     public string Date { get; set; }
