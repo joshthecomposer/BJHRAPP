@@ -1,15 +1,16 @@
 @await Html.PartialAsync("_NavBar");
 
+<style>
+    ::-webkit-calendar-picker-indicator {
+    filter: invert(.7);
+}
+</style>
+
 @model Punch
-<div class="mx-50 w-full md:h-screen absolute z-0 top-0 bg-gradient-to-r pt-10 md:px-0 px-3 from-[#1C2637] to-slate-900 flex flex-col gap-3">
+<div class="mx-50 w-full absolute z-0 top-0 bg-gradient-to-r pt-10 md:px-0 from-[#1C2637] to-slate-900 flex flex-col gap-3">
     @await Html.PartialAsync("_GreetingBar");
-    <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:ml-24 md:mr-5 bg-slate-800 md:w-auto w-full shadow-lg">
+    <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:ml-24 md:mr-5 bg-slate-800 md:mb-5 md:w-auto w-full shadow-lg">
         <div class="flex flex-col gap-3 items-center">
-            <h2 class="text-gray-300 text-slate-50 text-xl font-light text-center">
-                @(Model.TimeIn.Year == 0001 ? "You are clocked out" 
-                    : Model.TimeOut == null ? "You are clocked in"
-                        : "You are clocked out")
-            </h2>
             @await Html.PartialAsync("_TimePuncher", Model)
         </div>
         <div class=" flex flex-col gap-3 items-between w-full">
@@ -21,12 +22,13 @@
                     </span>
                          @ViewBag.Date.ToString("MMMM, dd yyyy")
                 </h2>
-                <div class="flex justify-between">
-                    <div class="flex space-between gap-3 text-slate-50">
-                        <form action='/users/timeclock/@Context.Session.GetInt32("UserId")/createfilter' method="POST">
-                            <label for="Filter" class="text-slate-400">Filter by Date</label>
-                            <input name="QueryDate" type="date" class="bg-slate-900 text-slate-400 px-4">
-                            <button class="">Search</button>
+                <div class="flex justify-between flex-col md:flex-row">
+                    <div class="text-slate-50 w-full md:w-auto">
+                        <form class="gap-0 flex items-center" action='/users/timeclock/@Context.Session.GetInt32("UserId")/createfilter' method="POST">
+                            <label for="Filter" class="text-slate-400 mr-2">Filter by</label>
+                            <input name="QueryDate" type="date" class="bg-slate-900 text-slate-400 px-4 mx-0">
+                            <button class="font-bold bg-slate-600 text-slate-50 px-1 hover:bg-indigo-500">Search</button>
+                            <a href='/users/timeclock/@Context.Session.GetInt32("UserId")' class="font-bold rounded-r-full bg-slate-600 text-slate-50 px-2 hover:bg-teal-500 hover:cursor-pointer align-middle">Today</a>
                         </form>
                     </div>
                 </div>
@@ -59,6 +61,15 @@
                     </div>
                 }
             </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-2 p-0">
+        <div class="gap-10 px-5 pb-5 pt-2 md:ml-24 bg-slate-800 w-full md:w-1/2 shadow-lg">
+            @await Html.PartialAsync("_CustomPunchForm", new CustomPunch())
+        </div>
+        <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:mr-5 bg-slate-800 w-full md:w-1/2 shadow-lg">
+
         </div>
     </div>
 

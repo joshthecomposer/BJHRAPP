@@ -21,15 +21,16 @@ public class TimeClockController : Controller
     [HttpGet("{userId}")]
     public IActionResult TimeClockDashboard(int userId)
     {
+        //TODO: Create a timepunch status user class for easier ternaries in the views.
         ViewBag.Punches = new List<Punch>();
         List<Punch> punches = _context.Punches
                                 .Where(p => p.UserId == userId)
-                                .OrderBy(p => p.TimeIn)
+                                .OrderByDescending(p => p.TimeIn)
                                 .ToList();
         Punch latest = new Punch();
         if (punches.Any())
         {
-            latest = punches.Last();
+            latest = punches.First();
             ViewBag.Punches = punches;
         }
         ViewBag.Date = DateTime.Now;
@@ -42,6 +43,10 @@ public class TimeClockController : Controller
     public RedirectResult CreateFilterUrl(object sender, EventArgs e, int userId)
     {
         string input = Request.Form["QueryDate"]!;
+        if (input == String.Empty)
+        {
+            return Redirect($"/users/timeclock/{userId}");
+        }
         DateTime date = DateTime.Parse(input);
         string url = $"/users/timeclock/{userId}/{date.Year}/{date.Month}/{date.Day}";
         return Redirect(url);
@@ -68,7 +73,7 @@ public class TimeClockController : Controller
             ViewBag.Punches = punches;
         }
         ViewBag.Date = new DateTime(year, month, day);
-        return View("TimeClockDashboard",latest);
+        return View("TimeClockDashboard", latest);
     }
 
     [ClaimCheck]
@@ -81,7 +86,7 @@ public class TimeClockController : Controller
                                 .ToList();
         if (!punches.Any())
         {
-            _context.Punches.Add(new Punch {UserId = userId, TimeIn = DateTime.UtcNow });
+            _context.Punches.Add(new Punch { UserId = userId, TimeIn = DateTime.UtcNow });
             _context.SaveChanges();
             return Redirect($"/users/timeclock/{userId}");
         }
@@ -98,10 +103,23 @@ public class TimeClockController : Controller
         }
         else
         {
-             _context.Punches.Add(new Punch {UserId = userId, TimeIn = DateTime.UtcNow });
-             _context.SaveChanges();
+            _context.Punches.Add(new Punch { UserId = userId, TimeIn = DateTime.UtcNow });
+            _context.SaveChanges();
         }
         return Redirect($"/users/timeclock/{userId}");
+    }
+
+    [HttpPost("punch/custom")]
+    public IActionResult CreateCustomPunch(CustomPunch input)
+    {
+        if (HttpContext.Session.GetInt32("UserId") == input.UserId)
+        {
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("=========MODEL STATE WAS VALID========");
+            }
+        }
+        return Redirect($"/users/timeclock/" + input.UserId);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
