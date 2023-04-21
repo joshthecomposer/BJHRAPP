@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BJHRApp.Models;
 using BJHRApp.Data;
 using BJHRApp.Utilities;
+using System.Text.Json;
 
 namespace BJHRApp.Controllers;
 [Route("users/timeclock")]
@@ -112,14 +113,22 @@ public class TimeClockController : Controller
     [HttpPost("punch/custom")]
     public IActionResult CreateCustomPunch(CustomPunch input)
     {
-        if (HttpContext.Session.GetInt32("UserId") == input.UserId)
+        if (ModelState.IsValid && HttpContext.Session.GetInt32("UserId") == input.UserId)
         {
-            if (ModelState.IsValid)
+            DateOnly date = DateOnly.Parse(input.Date);
+            TimeOnly timeIn = TimeOnly.Parse(input.TimeIn);
+            TimeOnly timeOut = TimeOnly.Parse(input.TimeOut);
+            Punch ingoing = new Punch
             {
-                Console.WriteLine("=========MODEL STATE WAS VALID========");
-            }
+                TimeIn = new DateTime(date.Year, date.Month, date.Day, timeIn.Hour, timeIn.Minute, 0).ToUniversalTime(),
+                TimeOut = new DateTime(date.Year, date.Month, date.Day, timeOut.Hour, timeOut.Minute, 0).ToUniversalTime(),
+                UserId = input.UserId
+            };
+            _context.Add(ingoing);
+            _context.SaveChanges();
+            return Redirect($"/users/timeclock/{input.UserId}");
         }
-        return Redirect($"/users/timeclock/" + input.UserId);
+        return Redirect($"/users/timeclock/{input.UserId}");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
