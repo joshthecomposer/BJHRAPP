@@ -1,35 +1,36 @@
 @model CustomPunch
-<div class="bg-yellow-700 rounded-t-lg py-2 w-full md:w-1/3"></div>
-<form
-    class="w-full md:w-1/3 flex flex-col gap-3 bg-slate-700 shadow-lg pt-2 pb-4 px-5" 
-    action='/users/timeclock/punch/custom' 
-    method="post">
-    <h2 class="text-slate-50 text-xl text-center uppercase font-bold text-slate-200">Custom Punch</h2>
-    <div class="flex flex-col">
-        <div class="w-full">
-            <label class="text-slate-400">Date</label>
-                <input
-                    asp-for="Date"
-                    type="date"
-                    class="appearance-none block uppercase w-full bg-slate-800 text-slate-500 rounded py-1 px-4 mb-3 leading-tight focus:outline-none focus:bg-slate-800" />
-        </div>
-        <div class="w-full flex justify-center gap-2">
-            <div class="w-1/2">
-                <label class="text-slate-400">Time In <span class="text-red-400" asp-validation-for="TimeIn"></span></label>
+<div class="bg-gradient-to-r from-yellow-800 to-red-700 rounded-t-lg pt-4 w-full md:w-1/3">
+    <form
+        class=" flex flex-col gap-3 bg-slate-900 rounded-t-lg shadow-lg pt-2 pb-4 px-5" 
+        action='/users/timeclock/punch/custom' 
+        method="post">
+        <h2 class="text-slate-50 text-xl text-center uppercase font-bold text-slate-200">Custom Punch</h2>
+        <div class="flex flex-col">
+            <div class="w-full">
+                <label class="text-slate-400">Date</label>
                     <input
-                        asp-for="TimeIn"
-                        type="time"
-                        class="appearance-none block uppercase w-full bg-slate-800 text-slate-500 rounded py-1 pl-1 mb-3 leading-tight focus:outline-none focus:bg-slate-800" />
+                        asp-for="Date"
+                        type="date"
+                        class="appearance-none block uppercase w-full bg-slate-800 text-slate-500 rounded py-1 px-4 mb-3 leading-tight focus:outline-none focus:bg-slate-800" />
             </div>
-            <div class="w-1/2">
-                <label class="text-slate-400">Time Out <span class="text-red-400" asp-validation-for="TimeIn"></span></label>
-                    <input
-                        asp-for="TimeOut"
-                        type="time"
-                        class="appearance-none block uppercase w-full bg-slate-800 text-slate-500 rounded py-1 pl-1 mb-3 leading-tight focus:outline-none focus:bg-slate-800" />
+            <div class="w-full flex justify-center gap-2">
+                <div class="w-1/2">
+                    <label class="text-slate-400">Time In <span class="text-red-400" asp-validation-for="TimeIn"></span></label>
+                        <input
+                            asp-for="TimeIn"
+                            type="time"
+                            class="appearance-none block uppercase w-full bg-slate-800 text-slate-500 rounded py-1 pl-1 mb-3 leading-tight focus:outline-none focus:bg-slate-800" />
+                </div>
+                <div class="w-1/2">
+                    <label class="text-slate-400">Time Out <span class="text-red-400" asp-validation-for="TimeIn"></span></label>
+                        <input
+                            asp-for="TimeOut"
+                            type="time"
+                            class="appearance-none block uppercase w-full bg-slate-800 text-slate-500 rounded py-1 pl-1 mb-3 leading-tight focus:outline-none focus:bg-slate-800" />
+                </div>
             </div>
         </div>
-    </div>
-    <input asp-for="UserId" type="hidden" value='@Context.Session.GetInt32("UserId")'>
-    <button class="rounded bg-yellow-700 text-slate-50 font-medium uppercase shadow-lg">Submit</button>
-</form>
+        <input asp-for="UserId" type="hidden" value='@Context.Session.GetInt32("UserId")'>
+        <button class="rounded bg-yellow-800 text-slate-50 font-medium uppercase shadow-lg">Submit</button>
+    </form>
+</div>
