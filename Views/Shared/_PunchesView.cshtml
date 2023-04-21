@@ -3,12 +3,31 @@
 <div id="overlay" class="h-full w-full fixed top-0 right-0 bg-black opacity-50 z-0" style="display:none"></div>
 <div 
     id="hidden-@Model.Id" 
-    class="fixed bg-slate-900 rounded-lg shadow-lg top-50 right-50 flex justify-center p-10 z-99"
+    class="fixed bg-slate-900 rounded-lg shadow-lg top-50 right-50 flex gap-4 flex-col align-center justify-center p-10 z-99"
     style="display:none">
-    
+    <form 
+        action="" 
+        class="flex flex-col gap-2 text-slate-400">
+        <div class="flex flex-col gap-1">
+            <label>Time In</label>
+            <input 
+                name="TimeIn" 
+                type="datetime-local"
+                value="@Model.TimeIn"
+                class="rounded bg-slate-800 px-2" />
+        </div>
+        <div class="flex flex-col gap-1">
+            <label>Time Out</label>
+            <input 
+                name="TimeOut" 
+                type="datetime-local"
+                value="@Model.TimeOut"
+                class="rounded bg-slate-800 px-2" />
+        </div>
+    </form>
     <button 
         onclick="viewPunch(@Model.Id)"
-        class="font-bold text-center uppercase rounded-lg bg-red-600 text-slate-50 px-1 py-1 hover:bg-red-500 hover:cursor-pointer">
+        class="font-bold text-center uppercase rounded-lg bg-indigo-600 text-slate-50 px-1 py-1 hover:bg-indigo-500 hover:cursor-pointer">
         Back
     </button>
 </div>
