@@ -1,4 +1,37 @@
 @model Punch
+
+<div id="overlay" class="h-full w-full fixed top-0 right-0 bg-black opacity-50 z-0" style="display:none"></div>
+<div 
+    id="hidden-@Model.Id" 
+    class="fixed bg-slate-900 rounded-lg shadow-lg top-50 right-50 flex gap-4 flex-col align-center justify-center p-10 z-99"
+    style="display:none">
+    <form 
+        action="" 
+        class="flex flex-col gap-2 text-slate-400">
+        <div class="flex flex-col gap-1">
+            <label>Time In</label>
+            <input 
+                name="TimeIn" 
+                type="datetime-local"
+                value="@Model.TimeIn"
+                class="rounded bg-slate-800 px-2" />
+        </div>
+        <div class="flex flex-col gap-1">
+            <label>Time Out</label>
+            <input 
+                name="TimeOut" 
+                type="datetime-local"
+                value="@Model.TimeOut"
+                class="rounded bg-slate-800 px-2" />
+        </div>
+    </form>
+    <button 
+        onclick="viewPunch(@Model.Id)"
+        class="font-bold text-center uppercase rounded-lg bg-indigo-600 text-slate-50 px-1 py-1 hover:bg-indigo-500 hover:cursor-pointer">
+        Back
+    </button>
+</div>
+
 <div class="rounded-t-lg shadow-lg text-slate-300 pt-4 bg-gradient-to-r from-purple-800 to-indigo-700 w-[200px] min-h-[250px]">
     <div class="flex flex-col justify-between gap-2 bg-slate-900 rounded-t-lg h-full shadow pt-2 pb-5 px-5">
         <h1 class="text-center text-xl text-gray-500">
@@ -18,34 +51,23 @@
             </h2>
             <p>@Model.TimeOut?.ToLocalTime().ToString("h:mm tt")</p>
         </div>
-        <a 
-            class="font-bold text-center uppercase rounded-lg bg-indigo-600 text-slate-50 px-1 py-1 hover:bg-indigo-500 hover:cursor-pointer"
-            action='/users/timeclock/@Context.Session.GetInt32("UserId")/punches/@Model.Id'>
+        <button
+            onclick="viewPunch(@Model.Id)"
+            class="font-bold text-center uppercase rounded-lg bg-indigo-600 text-slate-50 px-1 py-1 hover:bg-indigo-500 hover:cursor-pointer edit-punch">
             Edit Punch
-        </a>
+        </button>
     </div>
 </div>
 
-@* <div class="flex md:flex-row md:gap-6 gap-2 items-center">
-    <div class="flex gap-2 items-center">
-        <p class="text-slate-400 text-xs md:text-lg">In</p>
-        <p
-            class="bg-slate-800 text-xs w-16 md:w-32 md:text-xl text-slate-400 md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            @Model.TimeIn.ToLocalTime().ToString("hh:mm tt")
-        </p>
-    </div>
-    <div class="flex gap-2 items-center">
-        <p class="text-slate-400 text-xs md:text-lg">Out</p>
-        <p
-            class="bg-slate-800 text-xs w-16 md:w-32 text-slate-400 md:px-4 px-2 py-2 md:text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            @(Model.TimeOut != null ? Model.TimeOut?.ToLocalTime().ToString("hh:mm tt") : ". . . ")
-        </p>
-    </div>
-    <div class="flex gap-2 items-center">
-        <p class="text-slate-400 text-xs md:text-lg">Hours</p>
-        <p
-            class="bg-slate-800 w-10 md:w-20 text-slate-400 text-xs md:text-xl md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
-            @(Model.TimeOut == null ? ". . ." : Math.Round(((DateTime)Model.TimeOut - Model.TimeIn).TotalHours, 2))
-        </p>
-    </div>
-</div> *@
+<style>
+    .edit-punch-form::before {
+        content: "";
+        display: fixed;
+        top:0;
+        right:0;
+        height: 100vh;
+        width: 100vw;
+        background-color: black;
+        z-index: 0;
+    }
+</style>
