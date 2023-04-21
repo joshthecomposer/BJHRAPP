@@ -1,0 +1,51 @@
+@model Punch
+<div class="rounded-t-lg shadow-lg text-slate-300 pt-4 bg-gradient-to-r from-purple-800 to-indigo-700 w-[200px] min-h-[250px]">
+    <div class="flex flex-col justify-between gap-2 bg-slate-900 rounded-t-lg h-full shadow pt-2 pb-5 px-5">
+        <h1 class="text-center text-xl text-gray-500">
+            @Model.TimeIn.ToLocalTime().ToString("MMMM dd, yyyy")
+        </h1>
+        <div class="flex gap-2 justify-between items-center">
+            <h2 
+                class="text-lg capitalize font-bold">
+                Time in:
+            </h2>
+            <p>@Model.TimeIn.ToLocalTime().ToString("h:mm tt")</p>
+        </div>
+        <div class="flex gap-2 justify-between items-center">
+            <h2
+                class="text-lg capitalize font-bold">
+                Time out:
+            </h2>
+            <p>@Model.TimeOut?.ToLocalTime().ToString("h:mm tt")</p>
+        </div>
+        <a 
+            class="font-bold text-center uppercase rounded-lg bg-indigo-600 text-slate-50 px-1 py-1 hover:bg-indigo-500 hover:cursor-pointer"
+            action='/users/timeclock/@Context.Session.GetInt32("UserId")/punches/@Model.Id'>
+            Edit Punch
+        </a>
+    </div>
+</div>
+
+@* <div class="flex md:flex-row md:gap-6 gap-2 items-center">
+    <div class="flex gap-2 items-center">
+        <p class="text-slate-400 text-xs md:text-lg">In</p>
+        <p
+            class="bg-slate-800 text-xs w-16 md:w-32 md:text-xl text-slate-400 md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+            @Model.TimeIn.ToLocalTime().ToString("hh:mm tt")
+        </p>
+    </div>
+    <div class="flex gap-2 items-center">
+        <p class="text-slate-400 text-xs md:text-lg">Out</p>
+        <p
+            class="bg-slate-800 text-xs w-16 md:w-32 text-slate-400 md:px-4 px-2 py-2 md:text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+            @(Model.TimeOut != null ? Model.TimeOut?.ToLocalTime().ToString("hh:mm tt") : ". . . ")
+        </p>
+    </div>
+    <div class="flex gap-2 items-center">
+        <p class="text-slate-400 text-xs md:text-lg">Hours</p>
+        <p
+            class="bg-slate-800 w-10 md:w-20 text-slate-400 text-xs md:text-xl md:px-4 px-2 py-2 text-xl hover:text-slate-800 hover:bg-slate-400 hover:cursor-pointer">
+            @(Model.TimeOut == null ? ". . ." : Math.Round(((DateTime)Model.TimeOut - Model.TimeIn).TotalHours, 2))
+        </p>
+    </div>
+</div> *@
