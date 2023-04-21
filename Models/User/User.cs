@@ -27,8 +27,9 @@ public class User : BaseEntity
     //Foreign Keys
     public int? LocationId { get; set; }
 
-    // DB Associations
+    // DB Associations 
     public List<Punch> Punches = new List<Punch>();
+    public List<Shift> Shifts = new List<Shift>();
     public HomeAddress? HomeAddress { get; set; }
     public Location? Location { get; set; }
 }
