@@ -6,12 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BJHRApp.Models;
 public class CustomPunch
 {
-    [Required(ErrorMessage = "Field required.")]
+    [Required]
     public string Date { get; set; }
-    [Required(ErrorMessage = "Field required.")]
+    [Required]
     public string TimeIn { get; set; }
-    [Required(ErrorMessage = "Field required.")]
+    [Required]
     public string TimeOut { get; set; }
-    [Required(ErrorMessage = "Field required.")]
+    [Required]
     public int UserId { get; set; }
 }
