@@ -21,7 +21,7 @@ public class ShiftController : Controller
         _logger = logger;
         _context = context;
     }
-    [ClaimCheck]
+    [SessionCheck]
     [HttpGet("{UserId}")]
     public IActionResult ShiftDashboard(int UserId)
     {
@@ -30,7 +30,8 @@ public class ShiftController : Controller
         // This should probably be a dictionary, but I'll change that as needed. Placeholder to get the juices flowin'.
         List<string> Block = new List<string>(){"In: 9:00 | Out: 17:00", "In: 14:00 | Out: 22:00"};
         ViewBag.Users = Users;
-        ViewBag.Shifts = Block;
+        ViewBag.PresetShifts = Block;
+        ViewBag.Shifts = _context.Shifts.Where(s => s.In.Day == DateTime.UtcNow.Day).ToList();
         return View();
     }
 
@@ -53,7 +54,7 @@ public class ShiftController : Controller
                 NewShift.Out = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 17,0,0).ToUniversalTime();
                 _context.Add(NewShift);
                 _context.SaveChanges();
-                return RedirectToAction($"/users/shift/{UserId}");
+                return Redirect($"/users/shift/{UserId}");
             }
             if(Int32.Parse(Request.Form["Block"]!) == 1)
             {
@@ -61,7 +62,7 @@ public class ShiftController : Controller
                 NewShift.Out = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 22,0,0).ToUniversalTime();
                 _context.Add(NewShift);
                 _context.SaveChanges();
-                return RedirectToAction($"/users/shift/{UserId}");
+                return Redirect($"/users/shift/{UserId}");
             }
             Console.WriteLine("yay it's valid");
 
@@ -71,6 +72,5 @@ public class ShiftController : Controller
         {
             return View("ShiftDashboard");
         }
-        
     }
 }

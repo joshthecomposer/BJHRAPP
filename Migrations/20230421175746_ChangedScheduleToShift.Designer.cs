@@ -3,6 +3,7 @@ using System;
 using BJHRApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BJHRApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20230421175746_ChangedScheduleToShift")]
+    partial class ChangedScheduleToShift
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,34 +125,6 @@ namespace BJHRApp.Migrations
                     b.ToTable("Punches");
                 });
 
-            modelBuilder.Entity("BJHRApp.Models.Shift", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("In")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Out")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Shifts");
-                });
-
             modelBuilder.Entity("BJHRApp.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -204,17 +178,6 @@ namespace BJHRApp.Migrations
                 });
 
             modelBuilder.Entity("BJHRApp.Models.Punch", b =>
-                {
-                    b.HasOne("BJHRApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BJHRApp.Models.Shift", b =>
                 {
                     b.HasOne("BJHRApp.Models.User", "User")
                         .WithMany()

@@ -1,10 +1,11 @@
 @await Html.PartialAsync("_NavBar");
 
-<div class="mx-50 h-screen w-full fixed z-0 top-0 p-5 bg-gradient-to-r from-[#1C2637] to-slate-900 flex flex-col gap-3">
+<div class="mx-50 h-screen w-full top-0 p-5 bg-gradient-to-r from-[#1C2637] to-slate-900 flex flex-col gap-3">
 <div class="p-10 md:p-0 flex-col gap-5 flex">
     @await Html.PartialAsync("_GreetingBar")
     <div class="ml-24 mr-5 bg-slate-800 shadow-lg px-6 pt-2 pb-4 flex flex-col gap-3">
-        @await Html.PartialAsync("_Shift")
+        @await Html.PartialAsync("_ShiftCreate")
+        @await Html.PartialAsync("_ShiftView")
     </div>
 </div>
 </div>
