@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using BJHRApp.Models;
 using BJHRApp.Data;
 using BJHRApp.Utilities;
-using System.Text.Json;
 
 namespace BJHRApp.Controllers;
 [Route("users/timeclock")]
@@ -47,7 +46,8 @@ public class TimeClockController : Controller
         DateTime queryDate = new DateTime(year, month, day);
         ViewBag.Punches = new List<Punch>();
         //TODO: If someone clocks in at 11pm and out after 12am the next day, the timein will show that punch for the previous day. 
-        //Determine whether this is bad or not
+        //Determine whether this is bad or not.. 
+        //TODO: Maybe I should display them by the difference between time out and time in...
         List<Punch> punches = _context.Punches.Where(p => p.UserId == userId && (p.TimeIn.Date == queryDate)).ToList();
         Punch latest = new Punch();
         //This checkIfAny is there so that the time puncher button relies only on the actual latest punch, not the latest in the view list
@@ -100,6 +100,7 @@ public class TimeClockController : Controller
     [HttpPost("punch/custom")]
     public IActionResult CreateCustomPunch(CustomPunch input)
     {
+        //TODO: Figure out validation messages for the custom punch form.
         if (ModelState.IsValid && HttpContext.Session.GetInt32("UserId") == input.UserId)
         {
             DateOnly date = DateOnly.Parse(input.Date);
@@ -114,6 +115,20 @@ public class TimeClockController : Controller
             _context.Add(ingoing);
             _context.SaveChanges();
             return Redirect($"/users/timeclock/{input.UserId}");
+        }
+        return Redirect($"/users/timeclock/{input.UserId}");
+    }
+
+    [HttpPost("punch/update")]
+    public IActionResult UpdatePunch(Punch input)
+    {
+        Punch? oldPunch = _context.Punches.Where(p => p.Id == input.Id).FirstOrDefault();
+        if (ModelState.IsValid && HttpContext.Session.GetInt32("UserId") == input.UserId && oldPunch != null)
+        {
+            oldPunch.TimeIn = input.TimeIn;
+            oldPunch.TimeOut = input.TimeOut;
+            oldPunch.UpdatedAt = DateTime.UtcNow;
+            _context.SaveChanges();
         }
         return Redirect($"/users/timeclock/{input.UserId}");
     }
