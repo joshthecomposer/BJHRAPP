@@ -13,14 +13,23 @@
         <div class="flex flex-col gap-3 items-center">
             @await Html.PartialAsync("_TimePuncher", Model)
         </div>
+        <div  class="max-h-[325px] w-full flex-wrap">
+            <h2 class="text-indigo-400 text-xl font-medium">
+                <span class="font-light tracking-wide text-slate-50">
+                Punches for
+                </span>
+                    Today
+            </h2>
+        </div>
         <div class=" flex flex-col gap-3 items-between w-full">
+            
             <div class="flex flex-col gap-5 md:justify-between md:flex-row">
-                <h2 class="text-indigo-400 text-xl font-medium">
-                    <span class="font-light tracking-wide text-slate-50">
-                    Activity for
-                    </span>
-                        @ViewBag.Date.ToString("MMMM, dd yyyy")
-                </h2>
+                    @* <h2 class="text-indigo-400 text-xl font-medium">
+                        <span class="font-light tracking-wide text-slate-50">
+                        Activity for
+                        </span>
+                            @ViewBag.Date.ToString("MMMM, dd yyyy")
+                    </h2> *@
                 <div class="flex justify-between flex-col md:flex-row">
                     <div class="text-slate-50 w-full md:w-auto">
                         <form class="gap-0 flex items-center" action='/users/timeclock/@Context.Session.GetInt32("UserId")/createfilter' method="POST">
@@ -32,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="max-h-[325px] w-full md:w-1/2 h-full flex-wrap overflow-y-scroll">
+            <div class="max-h-[325px] w-full h-full flex-wrap overflow-y-scroll">
                 @* @foreach(Punch p in ViewBag.Punches)
                 {
                     @await Html.PartialAsync("_PunchesView", p);
