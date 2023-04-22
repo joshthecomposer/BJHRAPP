@@ -22,7 +22,7 @@ public class TimeClockController : Controller
     public RedirectResult TimeClockDashboard(int userId)
     {
         //TODO: GET RID OF THIS
-        return Redirect($"{userId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}");
+        return Redirect($"{userId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/desc");
     }
 
     [ClaimCheck]
@@ -35,30 +35,41 @@ public class TimeClockController : Controller
             return Redirect($"/users/timeclock/{userId}");
         }
         DateTime date = DateTime.Parse(input);
-        string url = $"/users/timeclock/{userId}/{date.Year}/{date.Month}/{date.Day}";
+        string url = $"/users/timeclock/{userId}/{date.Year}/{date.Month}/{date.Day}/desc";
         return Redirect(url);
     }
     //TODO: Filter into a weekly view instead of daily view.
     [ClaimCheck]
     [HttpGet("{userId}/{year}/{month}/{day}")]
-    public IActionResult FilterPunchView(int userId, int year, int month, int day)
+    [HttpGet("{userId}/{year}/{month}/{day}/{_order}")]
+    public IActionResult FilterPunchView(int userId, int year, int month, int day, string _order = "desc")
     {
         DateTime queryDate = new DateTime(year, month, day);
         ViewBag.Punches = new List<Punch>();
-        //TODO: If someone clocks in at 11pm and out after 12am the next day, the timein will show that punch for the previous day. 
-        //Determine whether this is bad or not.. 
-        //TODO: Maybe I should display them by the difference between time out and time in...
-        List<Punch> punches = _context.Punches.Where(p => p.UserId == userId && (p.TimeIn.Date == queryDate)).ToList();
+        //TODO: Clean this up...
+        switch (_order)
+        {
+            case "desc":
+                ViewBag.Punches = _context.Punches
+                                    .Where(p => p.UserId == userId && (p.TimeIn.Date == queryDate))
+                                    .OrderByDescending(p=>p.TimeIn)
+                                    .ToList();
+                break;
+            case "asc":
+                ViewBag.Punches = _context.Punches
+                                    .Where(p => p.UserId == userId && (p.TimeIn.Date == queryDate))
+                                    .OrderBy(p=>p.TimeIn)
+                                    .ToList();
+                break;
+            default:
+                break;
+        }
         Punch latest = new Punch();
         //This checkIfAny is there so that the time puncher button relies only on the actual latest punch, not the latest in the view list
         var checkIfAny = _context.Punches.Where(p => p.UserId == userId).OrderBy(p => p.TimeIn).LastOrDefault()!;
         if (checkIfAny != null)
         {
             latest = checkIfAny;
-        }
-        if (punches.Any())
-        {
-            ViewBag.Punches = punches;
         }
         ViewBag.Date = new DateTime(year, month, day);
         return View("TimeClockDashboard", latest);

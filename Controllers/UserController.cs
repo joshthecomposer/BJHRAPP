@@ -107,6 +107,12 @@ public class UserController : Controller
         }
     }
 
+    [HttpGet("test")]
+    public ViewResult TestPage()
+    {
+        return View();
+    }
+
     private void CreateSession(User user)
     {
         HttpContext.Session.SetInt32("UserId", user.Id);
