@@ -34,6 +34,15 @@ public class ShiftController : Controller
     }
 
     [SessionCheck]
+    [ClaimCheck]
+    [HttpGet("all/{UserId}")]
+    public IActionResult ShiftAll(int UserId)
+    {
+        ViewBag.AllShifts = _context.Shifts.Where(s => s.UserId == UserId).ToList();
+        return View();
+    }
+
+    [SessionCheck]
     [HttpPost("/shift/create")]
     public IActionResult CreateShift(ShiftCheck shiftCheck)
     {
@@ -55,6 +64,19 @@ public class ShiftController : Controller
         return Redirect($"/users/shift/{UserId}");
     }
 
+    [HttpPost("/shift/delete/{ShiftId}")]
+    public IActionResult DeleteShift(int ShiftId)
+    {
+        Shift? DeletedShift = _context.Shifts.SingleOrDefault(s => s.Id == ShiftId);
+        int UserId = DeletedShift.UserId;
+        if(DeletedShift!=null)
+        {
+            _context.Shifts.Remove(DeletedShift);
+            _context.SaveChanges();
+            return Redirect($"/users/shift/all/{UserId}");
+        }
+        return View("ShiftAll");
+    }
     private Shift BuildShift(string date, int shiftOption, int userId)
     {
         Shift NewShift = new Shift();
