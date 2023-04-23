@@ -38,16 +38,21 @@ public class ShiftController : Controller
     public IActionResult CreateShift(ShiftCheck shiftCheck)
     {
         int UserId = shiftCheck.UserId;
-        // TODO: Create logic that prevents a shift from being created if the user is already scheduled at all for that day.
-        // This could probably be combined with the ModelState.IsValid check
-        if(ModelState.IsValid)
+
+        DateOnly UniqueDate = DateOnly.Parse(shiftCheck.ShiftDate!);
+        bool IsScheduled = _context.Shifts.Where(s => s.UserId == shiftCheck.UserId && s.In.Day == UniqueDate.Day).Any();
+        Console.WriteLine($"IsScheduled: {IsScheduled}");
+
+        if(ModelState.IsValid && !IsScheduled)
         {
             Shift NewShift = BuildShift(shiftCheck.ShiftDate!, shiftCheck.Block, shiftCheck.UserId);
             _context.Add(NewShift);
             _context.SaveChanges();
             return Redirect($"/users/shift/{UserId}");
         }
-        return View("ShiftDashboard");
+        // TODO: Eventually validate this with AJAX
+        Console.WriteLine($"User already scheduled on {UniqueDate}");
+        return Redirect($"/users/shift/{UserId}");
     }
 
     private Shift BuildShift(string date, int shiftOption, int userId)
