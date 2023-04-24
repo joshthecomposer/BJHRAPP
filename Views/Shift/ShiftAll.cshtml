@@ -1,0 +1,45 @@
+@await Html.PartialAsync("_NavBar");
+
+<div class="mx-50 h-screen w-full top-0 p-5 bg-gradient-to-r from-[#1C2637] to-slate-900 flex flex-col gap-3">
+<div class="p-10 md:p-0 flex-col gap-5 flex">
+    @await Html.PartialAsync("_GreetingBar")
+    <div class="ml-24 mr-5 bg-slate-800 shadow-lg px-6 pt-2 pb-4 flex flex-col gap-3">
+        <div class="bg-slate-700 p-4 flex flex-col gap-2 justify-center items-center">
+            <div class="p-5 flex flex-col gap-4 w-52 items-center justify-between">
+                <p class="text-xl text-center capitalize font-bold">
+                    All Shifts
+                </p>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Shift In</th>
+                            <th>Shift Out</th>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var s in ViewBag.AllShifts)
+                        {
+                            <tr>
+                                <td class="px-5">@s.In.ToLocalTime()</td>
+                                <td class="px-5">@s.Out.ToLocalTime()</td>
+                                <td class="px-5">
+                                    <form action="/shift/delete/@s.Id" method="POST">
+                                        <button class="bg-red-500 hover:bg-red-500/50 px-2 rounded shadow-lg">DELETE</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <p class="bg-green-500 hover:bg-green-500/50 px-2 rounded shadow-lg"><a href="/users/shift/edit/@s.Id">EDIT</a></p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

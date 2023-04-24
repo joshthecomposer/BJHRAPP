@@ -26,10 +26,24 @@ public class ShiftController : Controller
     public IActionResult ShiftDashboard(int UserId)
     {
         List<User> ShiftUsers = _context.Users.Where(u => u.Id >=0).ToList();
-        // This should probably be a dictionary, but I'll change that as needed. Placeholder to get the juices flowin'.
-        List<string> Block = new List<string>(){"Opening", "Closing"};
+        Dictionary<int,string> ShiftStart = new Dictionary<int,string>();
+        ShiftStart.Add(0,"Open");
+        ShiftStart.Add(1,"Close");
         ViewBag.ShiftUsers = ShiftUsers;
-        ViewBag.PresetShifts = Block;
+        ViewBag.PresetShifts = ShiftStart;
+        foreach(var kvp in ViewBag.PresetShifts)
+        {
+            Console.WriteLine($"Key:{kvp.Key} Value: {kvp.Value}");
+        }
+        return View();
+    }
+
+    [SessionCheck]
+    [ClaimCheck]
+    [HttpGet("all/{UserId}")]
+    public IActionResult ShiftAll(int UserId)
+    {
+        ViewBag.AllShifts = _context.Shifts.Where(s => s.UserId == UserId).ToList();
         return View();
     }
 
@@ -42,10 +56,9 @@ public class ShiftController : Controller
         DateOnly UniqueDate = DateOnly.Parse(shiftCheck.ShiftDate!);
         bool IsScheduled = _context.Shifts.Where(s => s.UserId == shiftCheck.UserId && s.In.Day == UniqueDate.Day).Any();
         Console.WriteLine($"IsScheduled: {IsScheduled}");
-
         if(ModelState.IsValid && !IsScheduled)
         {
-            Shift NewShift = BuildShift(shiftCheck.ShiftDate!, shiftCheck.Block, shiftCheck.UserId);
+            Shift NewShift = BuildShift(shiftCheck.ShiftDate!, shiftCheck.Block.ElementAt(0).Key, shiftCheck.UserId);
             _context.Add(NewShift);
             _context.SaveChanges();
             return Redirect($"/users/shift/{UserId}");
@@ -55,6 +68,33 @@ public class ShiftController : Controller
         return Redirect($"/users/shift/{UserId}");
     }
 
+    [HttpGet("edit/{ShiftId}")]
+    public IActionResult ShiftEdit(int ShiftId)
+    {
+        Dictionary<int,string> ShiftStart = new Dictionary<int,string>();
+        ShiftStart.Add(0,"Open");
+        ShiftStart.Add(1,"Close");
+        Shift? ShiftToEdit = _context.Shifts.FirstOrDefault(s => s.Id == ShiftId);
+        ShiftCheck ShiftCheckToEdit = new ShiftCheck(); 
+        ShiftCheckToEdit.ShiftDate = ShiftToEdit.In.ToShortDateString();
+        // Consider 
+        Console.WriteLine($"############ SHIFT DATE : {ShiftCheckToEdit.ShiftDate}");
+        return View();
+    }
+
+    [HttpPost("/shift/delete/{ShiftId}")]
+    public IActionResult DeleteShift(int ShiftId)
+    {
+        Shift? DeletedShift = _context.Shifts.SingleOrDefault(s => s.Id == ShiftId);
+        int UserId = DeletedShift.UserId;
+        if(DeletedShift!=null)
+        {
+            _context.Shifts.Remove(DeletedShift);
+            _context.SaveChanges();
+            return Redirect($"/users/shift/all/{UserId}");
+        }
+        return View("ShiftAll");
+    }
     private Shift BuildShift(string date, int shiftOption, int userId)
     {
         Shift NewShift = new Shift();
