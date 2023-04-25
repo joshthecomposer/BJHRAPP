@@ -26,15 +26,11 @@ public class ShiftController : Controller
     public IActionResult ShiftDashboard(int UserId)
     {
         List<User> ShiftUsers = _context.Users.Where(u => u.Id >=0).ToList();
-        Dictionary<int,string> ShiftStart = new Dictionary<int,string>();
-        ShiftStart.Add(0,"Open");
-        ShiftStart.Add(1,"Close");
+        Dictionary<int,string> Blocks = new Dictionary<int,string>();
+        Blocks.Add(0,"Open");
+        Blocks.Add(1,"Close");
         ViewBag.ShiftUsers = ShiftUsers;
-        ViewBag.PresetShifts = ShiftStart;
-        foreach(var kvp in ViewBag.PresetShifts)
-        {
-            Console.WriteLine($"Key:{kvp.Key} Value: {kvp.Value}");
-        }
+        ViewBag.Blocks = Blocks;
         return View();
     }
 
@@ -56,16 +52,22 @@ public class ShiftController : Controller
         DateOnly UniqueDate = DateOnly.Parse(shiftCheck.ShiftDate!);
         bool IsScheduled = _context.Shifts.Where(s => s.UserId == shiftCheck.UserId && s.In.Day == UniqueDate.Day).Any();
         Console.WriteLine($"IsScheduled: {IsScheduled}");
+        // TODO: For some reason the model will not validate. Tried fixing, but need to research more.
         if(ModelState.IsValid && !IsScheduled)
         {
+            Console.WriteLine("Model State was valid!");
             Shift NewShift = BuildShift(shiftCheck.ShiftDate!, shiftCheck.Block.ElementAt(0).Key, shiftCheck.UserId);
             _context.Add(NewShift);
             _context.SaveChanges();
+            return RedirectToAction($"/users/shift/{UserId}");
+        }
+        else
+        {
+            // TODO: Eventually validate this with AJAX
+            Console.WriteLine($"User already scheduled on {UniqueDate}");
+            Console.WriteLine("OR Something went wrong rawrxd");
             return Redirect($"/users/shift/{UserId}");
         }
-        // TODO: Eventually validate this with AJAX
-        Console.WriteLine($"User already scheduled on {UniqueDate}");
-        return Redirect($"/users/shift/{UserId}");
     }
 
     [HttpGet("edit/{ShiftId}")]
@@ -91,7 +93,7 @@ public class ShiftController : Controller
         {
             _context.Shifts.Remove(DeletedShift);
             _context.SaveChanges();
-            return Redirect($"/users/shift/all/{UserId}");
+            return RedirectToAction($"/users/shift/all/{UserId}");
         }
         return View("ShiftAll");
     }
