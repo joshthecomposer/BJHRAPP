@@ -25,11 +25,9 @@ public class ShiftController : Controller
     [HttpGet("{UserId}")]
     public IActionResult ShiftDashboard(int UserId)
     {
-        List<User> ShiftUsers = _context.Users.Where(u => u.Id >=0).ToList();
-        Dictionary<int,string> Blocks = new Dictionary<int,string>();
-        Blocks.Add(0,"Open");
-        Blocks.Add(1,"Close");
-        ViewBag.ShiftUsers = ShiftUsers;
+        List<User> Users = _context.Users.Where(u => u.Id >=0).ToList();
+        List<string> Blocks = new List<string>();
+        ViewBag.Users = Users;
         ViewBag.Blocks = Blocks;
         return View();
     }
@@ -45,7 +43,7 @@ public class ShiftController : Controller
 
     [SessionCheck]
     [HttpPost("/shift/create")]
-    public IActionResult CreateShift(ShiftCheck shiftCheck)
+    public IActionResult CreateShift()
     {
         int UserId = shiftCheck.UserId;
 
@@ -53,7 +51,7 @@ public class ShiftController : Controller
         bool IsScheduled = _context.Shifts.Where(s => s.UserId == shiftCheck.UserId && s.In.Day == UniqueDate.Day).Any();
         Console.WriteLine($"IsScheduled: {IsScheduled}");
         // TODO: For some reason the model will not validate. Tried fixing, but need to research more.
-        if(ModelState.IsValid && !IsScheduled)
+        if(ModelState.IsValid && IsScheduled == false)
         {
             Console.WriteLine("Model State was valid!");
             Shift NewShift = BuildShift(shiftCheck.ShiftDate!, shiftCheck.Block.ElementAt(0).Key, shiftCheck.UserId);
