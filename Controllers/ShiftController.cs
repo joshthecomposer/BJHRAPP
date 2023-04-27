@@ -25,16 +25,10 @@ public class ShiftController : Controller
     [HttpGet("{UserId}")]
     public IActionResult ShiftDashboard(int UserId)
     {
-        List<User> ShiftUsers = _context.Users.Where(u => u.Id >=0).ToList();
-        Dictionary<int,string> ShiftStart = new Dictionary<int,string>();
-        ShiftStart.Add(0,"Open");
-        ShiftStart.Add(1,"Close");
-        ViewBag.ShiftUsers = ShiftUsers;
-        ViewBag.PresetShifts = ShiftStart;
-        foreach(var kvp in ViewBag.PresetShifts)
-        {
-            Console.WriteLine($"Key:{kvp.Key} Value: {kvp.Value}");
-        }
+        List<User> Users = _context.Users.Where(u => u.Id >=0).ToList();
+        List<string> Blocks = new List<string>(){"Open", "Close"};
+        ViewBag.Users = Users;
+        ViewBag.Blocks = Blocks;
         return View();
     }
 
@@ -49,36 +43,31 @@ public class ShiftController : Controller
 
     [SessionCheck]
     [HttpPost("/shift/create")]
-    public IActionResult CreateShift(ShiftCheck shiftCheck)
+    public IActionResult CreateShift(Shift shift)
     {
-        int UserId = shiftCheck.UserId;
-
-        DateOnly UniqueDate = DateOnly.Parse(shiftCheck.ShiftDate!);
-        bool IsScheduled = _context.Shifts.Where(s => s.UserId == shiftCheck.UserId && s.In.Day == UniqueDate.Day).Any();
+        int UserId = shift.UserId;
+        bool IsScheduled = _context.Shifts.Where(s => s.UserId == shift.UserId && s.Date == shift.Date).Any();
         Console.WriteLine($"IsScheduled: {IsScheduled}");
-        if(ModelState.IsValid && !IsScheduled)
+        if(ModelState.IsValid && IsScheduled == false)
         {
-            Shift NewShift = BuildShift(shiftCheck.ShiftDate!, shiftCheck.Block.ElementAt(0).Key, shiftCheck.UserId);
-            _context.Add(NewShift);
+            Console.WriteLine("Model State was valid!");
+            _context.Add(shift);
             _context.SaveChanges();
             return Redirect($"/users/shift/{UserId}");
         }
-        // TODO: Eventually validate this with AJAX
-        Console.WriteLine($"User already scheduled on {UniqueDate}");
-        return Redirect($"/users/shift/{UserId}");
+        else
+        {
+            // TODO: Eventually validate this with AJAX
+            Console.WriteLine($"User already scheduled on {shift.Date}");
+            Console.WriteLine("OR Something went wrong rawrxd");
+            return Redirect($"/users/shift/{UserId}");
+        }
     }
 
     [HttpGet("edit/{ShiftId}")]
     public IActionResult ShiftEdit(int ShiftId)
     {
-        Dictionary<int,string> ShiftStart = new Dictionary<int,string>();
-        ShiftStart.Add(0,"Open");
-        ShiftStart.Add(1,"Close");
-        Shift? ShiftToEdit = _context.Shifts.FirstOrDefault(s => s.Id == ShiftId);
-        ShiftCheck ShiftCheckToEdit = new ShiftCheck(); 
-        ShiftCheckToEdit.ShiftDate = ShiftToEdit.In.ToShortDateString();
-        // Consider 
-        Console.WriteLine($"############ SHIFT DATE : {ShiftCheckToEdit.ShiftDate}");
+        Console.WriteLine($"############ SHIFT DATE : ");
         return View();
     }
 
@@ -91,29 +80,31 @@ public class ShiftController : Controller
         {
             _context.Shifts.Remove(DeletedShift);
             _context.SaveChanges();
-            return Redirect($"/users/shift/all/{UserId}");
+            return RedirectToAction($"/users/shift/all/{UserId}");
         }
         return View("ShiftAll");
     }
-    private Shift BuildShift(string date, int shiftOption, int userId)
-    {
-        Shift NewShift = new Shift();
-        NewShift.UserId = userId;
-        DateOnly SelectedDate = DateOnly.Parse(date);
-        switch(shiftOption)
-        {
-            case 0:
-            Console.WriteLine("First Shift selected");
-            NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 9, 0 , 0).ToUniversalTime();
-            NewShift.Out = NewShift.In.AddHours(8);
-            break;
+    // TODO: Refactor this method to translate these shifts into date times 
+    // and add them to the ViewBag.
+    // private Shift BuildShift(string date, int shiftOption, int userId)
+    // {
+    //     Shift NewShift = new Shift();
+    //     NewShift.UserId = userId;
+    //     DateOnly SelectedDate = DateOnly.Parse(date);
+    //     switch(shiftOption)
+    //     {
+    //         case 0:
+    //         Console.WriteLine("First Shift selected");
+    //         NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 9, 0 , 0).ToUniversalTime();
+    //         NewShift.Out = NewShift.In.AddHours(8);
+    //         break;
 
-            case 1:
-            Console.WriteLine("Second Shift selected");
-            NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 14, 0, 0).ToUniversalTime();
-            NewShift.Out = NewShift.In.AddHours(8);
-            break;
-        }
-        return NewShift;
-    }
+    //         case 1:
+    //         Console.WriteLine("Second Shift selected");
+    //         NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 14, 0, 0).ToUniversalTime();
+    //         NewShift.Out = NewShift.In.AddHours(8);
+    //         break;
+    //     }
+    //     return NewShift;
+    // }
 }
