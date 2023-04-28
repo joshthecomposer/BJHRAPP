@@ -37,7 +37,14 @@ public class ShiftController : Controller
     [HttpGet("all/{UserId}")]
     public IActionResult ShiftAll(int UserId)
     {
-        ViewBag.AllShifts = _context.Shifts.Where(s => s.UserId == UserId).ToList();
+        List<Shift> AllShifts = _context.Shifts.Where(s => s.UserId == UserId).ToList();
+        List<ShiftWithDateTime> AllShiftsWithDateTime = new List<ShiftWithDateTime>();
+        for(int i=0; i<AllShifts.Count; i++)
+        {
+            ShiftWithDateTime NewShiftWithDateTime = new ShiftWithDateTime(AllShifts[i]);
+            AllShiftsWithDateTime.Add(NewShiftWithDateTime);
+        }
+        ViewBag.AllShiftsWithDateTime = AllShiftsWithDateTime;
         return View();
     }
 
@@ -57,7 +64,6 @@ public class ShiftController : Controller
         }
         else
         {
-            // TODO: Eventually validate this with AJAX
             Console.WriteLine($"User already scheduled on {shift.Date}");
             Console.WriteLine("OR Something went wrong rawrxd");
             return Redirect($"/users/shift/{UserId}");
@@ -83,27 +89,5 @@ public class ShiftController : Controller
             return RedirectToAction($"/users/shift/all/{UserId}");
         }
         return View("ShiftAll");
-    }
-    // TODO Continue refactoring this method. May need to abstract it into another class so that this method can be called more easily from other controllers.
-    private Dictionary<int, DateTime[]> BuildShift(string date, string block)
-    {   
-        Dictionary<int, DateTime[]> ShiftInOut = new Dictionary<int, DateTime[]>(); 
-        DateOnly ShiftScheduledDate = DateOnly.Parse(date);
-        switch(block)
-        {
-            case "Open":
-            Console.WriteLine("Case Open");
-            // We are going to need to put this switch case in a for loop
-            // We will also need to pass in the list of shift dates and blocks
-            // We'll parse everything into the appropriate In/Out DateTimes and go from there.
-            break;
-
-            case "Close":
-            Console.WriteLine("Case Close");
-            // NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 14, 0, 0).ToUniversalTime();
-            // NewShift.Out = NewShift.In.AddHours(8);
-            break;
-        }
-        return ShiftInOut;
     }
 }
