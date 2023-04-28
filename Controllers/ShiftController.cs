@@ -84,27 +84,26 @@ public class ShiftController : Controller
         }
         return View("ShiftAll");
     }
-    // TODO: Refactor this method to translate these shifts into date times 
-    // and add them to the ViewBag.
-    // private Shift BuildShift(string date, int shiftOption, int userId)
-    // {
-    //     Shift NewShift = new Shift();
-    //     NewShift.UserId = userId;
-    //     DateOnly SelectedDate = DateOnly.Parse(date);
-    //     switch(shiftOption)
-    //     {
-    //         case 0:
-    //         Console.WriteLine("First Shift selected");
-    //         NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 9, 0 , 0).ToUniversalTime();
-    //         NewShift.Out = NewShift.In.AddHours(8);
-    //         break;
+    // TODO Continue refactoring this method. May need to abstract it into another class so that this method can be called more easily from other controllers.
+    private Dictionary<int, DateTime[]> BuildShift(string date, string block)
+    {   
+        Dictionary<int, DateTime[]> ShiftInOut = new Dictionary<int, DateTime[]>(); 
+        DateOnly ShiftScheduledDate = DateOnly.Parse(date);
+        switch(block)
+        {
+            case "Open":
+            Console.WriteLine("Case Open");
+            // We are going to need to put this switch case in a for loop
+            // We will also need to pass in the list of shift dates and blocks
+            // We'll parse everything into the appropriate In/Out DateTimes and go from there.
+            break;
 
-    //         case 1:
-    //         Console.WriteLine("Second Shift selected");
-    //         NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 14, 0, 0).ToUniversalTime();
-    //         NewShift.Out = NewShift.In.AddHours(8);
-    //         break;
-    //     }
-    //     return NewShift;
-    // }
+            case "Close":
+            Console.WriteLine("Case Close");
+            // NewShift.In = new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day, 14, 0, 0).ToUniversalTime();
+            // NewShift.Out = NewShift.In.AddHours(8);
+            break;
+        }
+        return ShiftInOut;
+    }
 }
