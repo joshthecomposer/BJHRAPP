@@ -7,29 +7,52 @@
 </style>
 
 @model Punch
-<div class="mx-50 w-full absolute z-0 top-0 bg-gradient-to-r pt-10 md:px-0 from-[#1C2637] to-slate-900 flex flex-col gap-3">
+<div class="mx-50 h-screen w-full absolute z-0 top-0 bg-gradient-to-r pt-10 md:px-0 from-[#1C2637] to-slate-900 flex flex-col gap-3">
     @await Html.PartialAsync("_GreetingBar");
     <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:ml-24 md:mr-5 bg-slate-800 md:mb-5 md:w-auto w-full shadow-lg">
         <div class="flex flex-col gap-3 items-center">
             @await Html.PartialAsync("_TimePuncher", Model)
         </div>
-        <div  class="max-h-[325px] w-full flex-wrap">
+        <div  class="max-h-[325px] w-full flex flex-col gap-3">
             <h2 class="text-indigo-400 text-xl font-medium">
                 <span class="font-light tracking-wide text-slate-50">
                 Punches for
                 </span>
                     Today
             </h2>
+         <div class="max-h-[325px] w-full h-full flex-wrap overflow-y-scroll">
+                <table class="w-full text-left md:text-sm text-xs w-full shadow-lg rounded-lg overflow-hidden">
+                        <thead class="bg-slate-950 text-slate-50">
+                            <tr>
+                                <th class="py-2 px-2">Date</th>
+                                <th>Time In</th>
+                                <th>Time Out</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-50">
+                            @foreach(Punch p in ViewBag.Punches)
+                            {
+                                <tr class="even:bg-slate-800 odd:bg-slate-700 hover:bg-slate-600">
+                                    <td class="py-2 px-2">@p.TimeIn.ToLocalTime().ToString("MMMM dd, yyyy")</td>
+                                    <td class="py-2 px-2">@p.TimeIn.ToLocalTime().ToString("hh:mm tt")</td>
+                                    <td class="py-2 px-2">@p.TimeOut?.ToLocalTime().ToString("hh:mm tt")</td>
+                                    <td class="py-2 px-2">
+                                        @(p.TimeOut != null ? Math.Round((decimal)(p.TimeOut - p.TimeIn)?.TotalHours!, 2) : ". . .")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+            </div>
         </div>
+
+
+
+
         <div class=" flex flex-col gap-3 items-between w-full">
-            
             <div class="flex flex-col gap-5 md:justify-between md:flex-row">
-                    @* <h2 class="text-indigo-400 text-xl font-medium">
-                        <span class="font-light tracking-wide text-slate-50">
-                        Activity for
-                        </span>
-                            @ViewBag.Date.ToString("MMMM, dd yyyy")
-                    </h2> *@
                 <div class="flex justify-between flex-col md:flex-row">
                     <div class="text-slate-50 w-full md:w-auto">
                         <form class="gap-0 flex items-center" action='/users/timeclock/@Context.Session.GetInt32("UserId")/createfilter' method="POST">
@@ -41,51 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div class="max-h-[325px] w-full h-full flex-wrap overflow-y-scroll">
-                @* @foreach(Punch p in ViewBag.Punches)
-                {
-                    @await Html.PartialAsync("_PunchesView", p);
-                } *@
-                
-                <table class="w-full text-left md:text-sm text-xs w-full shadow-lg rounded-lg overflow-hidden">
-                    <thead class="bg-slate-950 text-slate-50">
-                        <tr>
-                            <th class="py-2 px-2">Date</th>
-                            <th>Time In</th>
-                            <th>Time Out</th>
-                            <th>Hours</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-slate-50">
-                        @foreach(Punch p in ViewBag.Punches)
-                        {
-                            <tr class="even:bg-slate-800 odd:bg-slate-700 hover:bg-slate-600">
-                                <td class="py-2 px-2">@p.TimeIn.ToLocalTime().ToString("MMMM dd, yyyy")</td>
-                                <td class="py-2 px-2">@p.TimeIn.ToLocalTime().ToString("hh:mm tt")</td>
-                                <td class="py-2 px-2">@p.TimeOut?.ToLocalTime().ToString("hh:mm tt")</td>
-                                <td class="py-2 px-2">
-                                    @(p.TimeOut != null ? Math.Round((decimal)(p.TimeOut - p.TimeIn)?.TotalHours!, 2) : ". . .")
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-
-                </table>
-
-
-            </div>
         </div>
     </div>
-
-    <div class="flex flex-col md:flex-row gap-2 p-0">
-        <div class="gap-10 px-5 pb-5 pt-2 md:ml-24 bg-slate-800 w-full md:w-1/2 shadow-lg">
-            @await Html.PartialAsync("_CustomPunchForm", new CustomPunch())
-        </div>
-        <div class="flex flex-col md:flex-row gap-10 px-5 pb-5 pt-2 md:mr-5 bg-slate-800 w-full md:w-1/2 shadow-lg">
-
-        </div>
-    </div>
-
 </div>
-
 <script src="~/js/punchView.js"></script>
