@@ -4,12 +4,10 @@ import Test from './pages/Test'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
     return (
         <>
             <Routes>
-                <Route path="client/test" element={ <Test/> } />
+                <Route path="client/test" element={<Test />} />
             </Routes>
         </>
     )

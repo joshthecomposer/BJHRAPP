@@ -6,9 +6,9 @@ using BJHRApp.Data;
 using BJHRApp.Utilities;
 
 namespace BJHRApp.Controllers;
+[SessionCheck]
 public class ReactController : Controller
-{ 
-
+{
     public ViewResult TestReactView()
     {
         return View();
