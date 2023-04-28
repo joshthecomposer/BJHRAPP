@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var s in ViewBag.AllShifts)
+                        @foreach(var s in ViewBag.AllShiftsWithDateTime)
                         {
                             <tr>
                                 <td class="px-5">@s.In.ToLocalTime()</td>
