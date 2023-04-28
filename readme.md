@@ -8,5 +8,3 @@
 * Asp.Net Web API
 * Entity Framework Core
 * MySQL DB
-### Other:
-* PBKDF2 SHA256 Password hashing
