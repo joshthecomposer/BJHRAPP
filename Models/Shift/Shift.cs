@@ -1,10 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 namespace BJHRApp.Models;
 
 public class Shift : BaseEntity
 {
     public string? Date { get; set; }
     public string? Block { get; set; }
-
     public int UserId { get; set; }
 
     // DB Associations
