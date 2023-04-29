@@ -21,6 +21,7 @@ public class ShiftController : Controller
         _logger = logger;
         _context = context;
     }
+
     [SessionCheck]
     [HttpGet("{UserId}")]
     public IActionResult ShiftDashboard(int UserId)
@@ -49,7 +50,7 @@ public class ShiftController : Controller
     }
 
     [SessionCheck]
-    [HttpPost("/shift/create")]
+    [HttpPost("create")]
     public IActionResult CreateShift(Shift shift)
     {
         int UserId = shift.UserId;
@@ -73,11 +74,36 @@ public class ShiftController : Controller
     [HttpGet("edit/{ShiftId}")]
     public IActionResult ShiftEdit(int ShiftId)
     {
-        Console.WriteLine($"############ SHIFT DATE : ");
-        return View();
+        List<User> Users = _context.Users.Where(u => u.Id >=0).ToList();
+        List<string> Blocks = new List<string>(){"Open", "Close"};
+        ViewBag.Users = Users;
+        ViewBag.Blocks = Blocks;
+
+        Shift? OneShift = _context.Shifts.FirstOrDefault(s => s.Id == ShiftId);
+        return View(OneShift);
     }
 
-    [HttpPost("/shift/delete/{ShiftId}")]
+    [HttpPost("update/{ShiftId}")]
+    public IActionResult UpdateShift(Shift newShift, int ShiftId)
+    {
+        Shift? OldShift = _context.Shifts.FirstOrDefault(s => s.Id == ShiftId);
+        int UserId = (Int32)HttpContext.Session.GetInt32("UserId")!;
+        bool IsScheduled = _context.Shifts.Where(s => s.UserId == newShift.UserId && s.Date == newShift.Date && s.Block == newShift.Block).Any();
+
+        if(ModelState.IsValid && !IsScheduled)
+        {
+            OldShift.UserId = newShift.UserId;
+            OldShift.Date = newShift.Date;
+            OldShift.Block = newShift.Block;
+            OldShift.UpdatedAt = DateTime.UtcNow;
+            _context.SaveChanges();
+            return RedirectToAction("ShiftAll", new { UserId = newShift.UserId });
+        }
+
+        return RedirectToAction("ShiftEdit", new { ShiftId = OldShift.Id, errors = ModelState });
+    }
+
+    [HttpPost("delete/{ShiftId}")]
     public IActionResult DeleteShift(int ShiftId)
     {
         Shift? DeletedShift = _context.Shifts.SingleOrDefault(s => s.Id == ShiftId);
@@ -86,7 +112,7 @@ public class ShiftController : Controller
         {
             _context.Shifts.Remove(DeletedShift);
             _context.SaveChanges();
-            return RedirectToAction($"/users/shift/all/{UserId}");
+            return Redirect($"/users/shift/all/{UserId}");
         }
         return View("ShiftAll");
     }
